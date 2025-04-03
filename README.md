@@ -49,4 +49,5 @@ After adding this repo as a submodule, you need to __link__ the `main resources 
 - And that's it, you've successfully injected the main resources folder into your Unity project. From now on, if the submodule __gets updated__ in the future, those changes will __also be reflected__ in your Unity project as well.
 
 ## PACKAGES CREDITS
-- 
+
+- [__Asset Usage Detector__](https://assetstore.unity.com/packages/tools/utilities/asset-usage-detector-112837) by [yasirkula](https://yasirkula.net/)
