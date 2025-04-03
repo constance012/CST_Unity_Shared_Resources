@@ -51,3 +51,4 @@ After adding this repo as a submodule, you need to __link__ the `main resources 
 ## PACKAGES CREDITS
 
 - [__Asset Usage Detector__](https://assetstore.unity.com/packages/tools/utilities/asset-usage-detector-112837) by [yasirkula](https://yasirkula.net/)
+- [__Serialized Dictionary__](https://assetstore.unity.com/packages/tools/utilities/serialized-dictionary-243052) by [ayellowpaper](https://yellowpaperwastaken.wordpress.com/)
