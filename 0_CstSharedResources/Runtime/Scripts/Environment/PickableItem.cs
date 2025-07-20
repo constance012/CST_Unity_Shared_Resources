@@ -123,7 +123,7 @@ public sealed class PickableItem : Interactable, IPoolable
 		if (_delay <= 0f)
 		{
 			Vector2 flyDirection = _player.position - transform.position;
-			rb2D.velocity = flyDirection.normalized * flySpeed;
+			rb2D.linearVelocity = flyDirection.normalized * flySpeed;
 
 			if (flyDirection.sqrMagnitude <= Mathf.Pow(pickUpMinDistance, 2))
 				Interact();

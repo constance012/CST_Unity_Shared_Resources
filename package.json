@@ -1,0 +1,25 @@
+{
+	"name": "com.cstgames.sharedresources",
+	"version": "1.1.0",
+	"displayName": "CST Unity Shared Resources",
+	"description": "Shared resource for CST Games' Unity 6 projects",
+	"unity": "6000.0",
+	"changelogUrl": "https://github.com/constance012/CST_Unity_Shared_Resources/releases",
+	"licensesUrl": "https://github.com/constance012/CST_Unity_Shared_Resources/blob/develop/LICENSE",
+	"dependencies": {
+		"com.yasirkula.assetusagedetector": "https://github.com/yasirkula/UnityAssetUsageDetector.git",
+		"ayellowpaper.serialized-dictionary": "https://github.com/ayellowpaper/SerializedDictionary.git",
+		"com.unity.textmeshpro": "3.0.9"
+	},
+	"keywords": [
+		"cstgames",
+		"shared",
+		"resources",
+		"unity"
+	],
+	"author": {
+		"name": "Constance Anderson",
+		"email": "lvq13302@gmail.com",
+		"url": "https://constance012.itch.io"
+	}
+}
