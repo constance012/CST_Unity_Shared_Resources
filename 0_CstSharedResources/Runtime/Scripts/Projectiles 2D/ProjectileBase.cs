@@ -90,7 +90,7 @@ public abstract class ProjectileBase : MonoBehaviour, IPoolable
 		if (!trail.emitting)
 			trail.emitting = true;
 			
-		rb2D.velocity = transform.right * flySpeed;
+		rb2D.linearVelocity = transform.right * flySpeed;
 	}
 
 	protected void TrackingTarget()
