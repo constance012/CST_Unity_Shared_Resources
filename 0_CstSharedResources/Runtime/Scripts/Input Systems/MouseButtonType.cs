@@ -1,4 +1,4 @@
-public enum MouseButton
+public enum MouseButtonType
 {
 	Left,
 	Right,
