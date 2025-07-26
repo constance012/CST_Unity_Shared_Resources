@@ -48,10 +48,10 @@ public abstract class Interactable : MonoBehaviour
 	{
 		if (_player == null)
 		{
-			_player = GameObject.FindWithTag("Player").transform;
+			_playerTransform = GameObject.FindWithTag(GlobalDefines.PLAYER_TAG).transform;
 		}
 
-		_worldCanvas = GameObject.FindWithTag("WorldCanvas").transform;
+		_worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).transform;
 		_mat = spriteRenderer.material;
 	}
 

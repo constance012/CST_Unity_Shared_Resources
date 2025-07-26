@@ -19,7 +19,7 @@ public class RegularWorldHealthBar : RegularHealthBar
 
 		if (worldCanvas == null)
 		{
-			worldCanvas = GameObject.FindWithTag("WorldCanvas").GetComponent<Canvas>();
+			worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).GetComponent<Canvas>();
 			worldCanvas.worldCamera = Camera.main;
 		}
 		

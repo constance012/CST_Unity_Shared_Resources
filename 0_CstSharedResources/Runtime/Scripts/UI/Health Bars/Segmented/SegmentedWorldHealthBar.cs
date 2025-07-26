@@ -13,7 +13,7 @@ public class SegmentedWorldHealthBar : SegmentedHealthBar
 		base.Awake();
 		if (worldCanvas == null)
 		{
-			worldCanvas = GameObject.FindWithTag("WorldCanvas").GetComponent<Canvas>();
+			worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).GetComponent<Canvas>();
 		}
 		
 		transform.SetParent(worldCanvas.transform, false);
