@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
-public class RegularHealthBar : MonoBehaviour
+public class RegularHealthBar : MonoBehaviour, IVisitable
 {
 	[Header("References"), Space]
 	[SerializeField] private Slider mainSlider;
@@ -38,6 +38,11 @@ public class RegularHealthBar : MonoBehaviour
 	private void Start()
 	{
 		SetMaxHealth(stats.GetDynamicStat(Stat.MaxHealth));
+	}
+
+	public void Accept(IVisitor visitor)
+	{
+		visitor.Visit(this);
 	}
 
 	public void SetCurrentHealth(float current)

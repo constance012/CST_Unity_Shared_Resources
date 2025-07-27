@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SegmentedHealthBar : MonoBehaviour
+public class SegmentedHealthBar : MonoBehaviour, IVisitable
 {
 	[Header("Health Segments"), Space]
 	[SerializeField] private GameObject segmentPrefab;
@@ -36,6 +36,11 @@ public class SegmentedHealthBar : MonoBehaviour
 		_tweenPool.KillActiveTweens(true);
 	}
 
+	public void Accept(IVisitor visitor)
+	{
+		visitor.Visit(this);
+	}
+
 	public async void SetCurrentHealth(float current)
 	{
 		_tweenPool.KillActiveTweens(true);
@@ -57,7 +62,7 @@ public class SegmentedHealthBar : MonoBehaviour
 				modifiedSegments[i - _previousHealth] = FillingSegment(i);
 			}
 		}
-		
+
 		_previousHealth = currentInt;
 		await Task.WhenAll(modifiedSegments);
 	}
