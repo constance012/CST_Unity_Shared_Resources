@@ -4,6 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Manages all the keyboard input for the game, using Unity's legacy input system.
 /// </summary>
+[AddComponentMenu("Singletons/Legacy Input Manager")]
 public class LegacyInputManager : Singleton<LegacyInputManager>
 {
 	[Header("Keyset Reference"), Space]

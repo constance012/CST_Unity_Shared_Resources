@@ -10,8 +10,8 @@ using UnityDebug = UnityEngine.Debug;
 /// <summary>
 /// Manages inputs from various devices and sources, using the NEW input system.
 /// </summary>
-[AddComponentMenu("Singletons/Input Manager")]
-public sealed class InputManager : Singleton<InputManager>
+[AddComponentMenu("Singletons/New Input Manager")]
+public sealed class NewInputManager : Singleton<NewInputManager>
 {
 	public event EventHandler OnAttackAction;
 	public event EventHandler<InputActionPhase> OnAimModeToggleAction;
