@@ -3,6 +3,10 @@ using DG.Tweening;
 
 public sealed class PickableItem : Interactable, IPoolable
 {
+	[Header("Overriden Item (Useful for debugging or direct assignment)"), Space]
+	[SerializeField] private Item currentItem;
+	[SerializeField] private int overrideQuantity;
+
 	[Header("References"), Space]
 	[SerializeField] private Rigidbody2D rb2D;
 
@@ -17,24 +21,32 @@ public sealed class PickableItem : Interactable, IPoolable
 	[SerializeField] private float pickUpFailDelay;
 
 	// Private fields.
-	private Item _currentItem;
 	private int _overrideQuantity = -1;
 	private float _lifeTime;
 	private float _delay;
+
+	private void Start()
+	{
+		if (currentItem != null)
+		{
+			Initialize(currentItem, overrideQuantity);
+		}
+	}
 
 	public void Initialize(Item itemSO, int overrideQuantity)
 	{
 		_lifeTime = lifeTime;
 		_isInteracted = false;
 		_overrideQuantity = overrideQuantity;
+		_delay = pickUpFailDelay;
 
-		_currentItem = Instantiate(itemSO);
-		_currentItem.name = itemSO.name;
+		currentItem = Instantiate(itemSO);
+		currentItem.name = itemSO.name;
 
 		if (_overrideQuantity != -1)
-			_currentItem.quantity = Mathf.Clamp(_overrideQuantity, 0, _currentItem.maxPerStack);
+			currentItem.quantity = Mathf.Clamp(_overrideQuantity, 0, currentItem.maxPerStack);
 
-		spriteRenderer.sprite = _currentItem.icon;
+		spriteRenderer.sprite = currentItem.icon;
 	}
 
 	public void Allocate()
@@ -48,7 +60,7 @@ public sealed class PickableItem : Interactable, IPoolable
 		if (_popupLabel != null)
 			Destroy(_popupLabel.gameObject);
 
-		_currentItem = null;
+		currentItem = null;
 		_lifeTime = -1f;
 		gameObject.SetActive(false);
 	}
@@ -67,9 +79,9 @@ public sealed class PickableItem : Interactable, IPoolable
 	{
 		Transform foundLabel = _worldCanvas.transform.Find("Popup Label");
 
-		string itemName = _currentItem.displayName;
-		int quantity = _currentItem.quantity;
-		Color textColor = _currentItem.rarity.color;
+		string itemName = currentItem.displayName;
+		int quantity = currentItem.quantity;
+		Color textColor = currentItem.rarity.color;
 
 		// Create a clone if not already exists.
 		if (foundLabel == null)
@@ -92,9 +104,9 @@ public sealed class PickableItem : Interactable, IPoolable
 	{
 		if (!_isInteracted)
 		{
-			Debug.Log($"You're picking up a(n) {_currentItem.displayName}");
+			Debug.Log($"You're picking up a(n) {currentItem.displayName}");
 			
-			if (_currentItem.autoUse && _currentItem.Use(_player, forced: _delay > 0f))
+			if (currentItem.autoUse && currentItem.Use(forced: _delay > 0f))
 			{
 				_isInteracted = true;
 				Disable();
@@ -122,7 +134,7 @@ public sealed class PickableItem : Interactable, IPoolable
 
 		if (_delay <= 0f)
 		{
-			Vector2 flyDirection = _player.position - transform.position;
+			Vector2 flyDirection = _playerTransform.position - transform.position;
 			rb2D.linearVelocity = flyDirection.normalized * flySpeed;
 
 			if (flyDirection.sqrMagnitude <= Mathf.Pow(pickUpMinDistance, 2))

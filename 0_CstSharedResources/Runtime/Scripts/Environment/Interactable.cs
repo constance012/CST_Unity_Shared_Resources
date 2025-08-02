@@ -7,26 +7,7 @@ public abstract class Interactable : MonoBehaviour
 {
 	public enum InputSource { Mouse, Keyboard, Joystick, None }
 
-	public enum InteractableType
-	{
-		/// <summary>
-		/// Can only be controlled by other mechanisms.
-		/// </summary>
-		Passive,
-
-		/// <summary>
-		/// Can either be controlled by other mechanisms or interacted by the player.
-		/// </summary>
-		Active,
-
-		/// <summary>
-		/// Can only be interacted manually by the player.
-		/// </summary>
-		Manual
-	}
-
 	[Header("Type"), Space]
-	public InteractableType type;
 	public InputSource inputSource;
 
 	[Header("Reference"), Space]
@@ -38,7 +19,7 @@ public abstract class Interactable : MonoBehaviour
 	protected float interactDistance;
 
 	// Protected fields.
-	protected static Transform _player;
+	protected static Transform _playerTransform;
 	protected bool _isInteracted;
 	protected Transform _worldCanvas;
 	protected Material _mat;
@@ -46,26 +27,21 @@ public abstract class Interactable : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		if (_player == null)
+		if (_playerTransform == null)
 		{
-			_player = GameObject.FindWithTag("Player").transform;
+			_playerTransform = GameObject.FindWithTag(GlobalDefines.PLAYER_TAG).transform;
 		}
 
-		_worldCanvas = GameObject.FindWithTag("WorldCanvas").transform;
+		_worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).transform;
 		_mat = spriteRenderer.material;
 	}
 
 	protected void Update()
 	{
-		if (type == InteractableType.Passive)
-			return;
-
-		Vector2 worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-		float mouseDistance = Vector2.Distance(worldMousePos, transform.position);
-		float playerDistance = Vector2.Distance(_player.position, transform.position);
-
-		CheckForInteraction(mouseDistance, playerDistance);
+		if (CheckForPlayer(out float mouseDistance, out float playerDistance))
+		{
+			CheckForInteraction(mouseDistance, playerDistance);
+		}
 	}
 
 	public abstract void Interact();
@@ -91,9 +67,9 @@ public abstract class Interactable : MonoBehaviour
 
 		_mat.SetFloat("_Thickness", .4f);
 
-		if (Input.GetKeyDown(KeyCode.E))
+		if (LegacyInputManager.Instance.GetKeyDown(KeybindingActions.Interact))
 			Interact();
-			
+
 		// TODO - derived classes implement their own way to visualize interaction.
 	}
 
@@ -120,5 +96,23 @@ public abstract class Interactable : MonoBehaviour
 	{
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireSphere(transform.position, interactDistance);
+	}
+
+	private bool CheckForPlayer(out float mouseDistance, out float playerDistance)
+	{
+		mouseDistance = int.MaxValue;
+		playerDistance = int.MaxValue;
+
+		if (_playerTransform != null)
+		{
+			Vector2 worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+			mouseDistance = Vector2.Distance(worldMousePos, transform.position);
+			playerDistance = Vector2.Distance(_playerTransform.position, transform.position);
+
+			return true;
+		}
+
+		return false;
 	}
 }

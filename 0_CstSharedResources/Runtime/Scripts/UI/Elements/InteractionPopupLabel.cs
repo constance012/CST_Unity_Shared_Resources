@@ -15,7 +15,7 @@ public class InteractionPopupLabel : MonoBehaviour
 
 	private void Awake()
 	{
-		worldCanvas = GameObject.FindWithTag("WorldCanvas").transform;
+		worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).transform;
 	}
 
 	public void RestartAnimation()

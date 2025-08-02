@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WorldHealthBar : HealthBar
+public class SegmentedWorldHealthBar : SegmentedHealthBar
 {
 	[Header("World Position"), Space]
 	[SerializeField] private Transform worldPos;
@@ -13,7 +13,7 @@ public class WorldHealthBar : HealthBar
 		base.Awake();
 		if (worldCanvas == null)
 		{
-			worldCanvas = GameObject.FindWithTag("WorldCanvas").GetComponent<Canvas>();
+			worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).GetComponent<Canvas>();
 		}
 		
 		transform.SetParent(worldCanvas.transform, false);

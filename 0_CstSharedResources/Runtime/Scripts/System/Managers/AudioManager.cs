@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityRandom = UnityEngine.Random;
 
@@ -6,13 +6,13 @@ using UnityRandom = UnityEngine.Random;
 public sealed class AudioManager : PersistentSingleton<AudioManager>
 {
 	[Header("Audio Array"), Space]
-	public Audio[] audioArray;
+	public List<AudioEntry> audioEntries;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		foreach (var audio in audioArray)
+		foreach (var audio in audioEntries)
 		{
 			GameObject audioSourceHolder = new GameObject(audio.name);
 			audioSourceHolder.transform.SetParent(transform.Find(audio.audioType.ToString()));
@@ -22,14 +22,9 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 			audio.source.outputAudioMixerGroup = audio.mixerGroup;
 			audio.source.volume = audio.volume;
 			audio.source.pitch = audio.pitch;
-			audio.source.loop = audio.loop;
+			audio.source.loop = audio.isLooped;
 			audio.source.playOnAwake = false;
 		}
-	}
-
-	private void Start()
-	{
-		Play("Main Theme");
 	}
 
 	/// <summary>
@@ -38,7 +33,7 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 	/// <param name="audioName"></param>
 	public void Play(string audioName)
 	{
-		if (!TryGetAudio(audioName, out Audio chosenAudio))
+		if (!TryGetAudio(audioName, out AudioEntry chosenAudio))
 		{
 			Debug.LogWarning($"Audio Clip: {audioName} could not be found!!");
 			return;
@@ -57,7 +52,7 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 	/// <param name="pitch"></param>
 	public void Play(string audioName, int clipIndex, float pitch)
 	{
-		if (!TryGetAudio(audioName, out Audio chosenAudio))
+		if (!TryGetAudio(audioName, out AudioEntry chosenAudio))
 		{
 			Debug.LogWarning($"Audio Clip: {audioName} could not be found!!");
 			return;
@@ -77,7 +72,7 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 	/// <param name="max"></param>
 	public void PlayWithRandomPitch(string audioName, float min, float max)
 	{
-		if (!TryGetAudio(audioName, out Audio chosenAudio))
+		if (!TryGetAudio(audioName, out AudioEntry chosenAudio))
 		{
 			Debug.LogWarning($"Audio Clip: {audioName} could not be found!!");
 			return;
@@ -91,7 +86,7 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 
 	public void Stop(string audioName)
 	{
-		if (!TryGetAudio(audioName, out Audio chosenAudio))
+		if (!TryGetAudio(audioName, out AudioEntry chosenAudio))
 		{
 			Debug.LogWarning($"Audio Clip: {audioName} could not be found!!");
 			return;
@@ -102,25 +97,25 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 
 	public void SetVolume(string audioName, float newVolume, bool resetToDefault = false)
 	{
-		if (TryGetAudio(audioName, out Audio chosenAudio))
+		if (TryGetAudio(audioName, out AudioEntry chosenAudio))
 		{
 			chosenAudio.source.volume = resetToDefault ? chosenAudio.volume : newVolume;
 		}
 	}
 
-	public bool TryGetAudio(string audioName, out Audio chosenAudio)
+	public bool TryGetAudio(string audioName, out AudioEntry chosenAudio)
 	{
 		chosenAudio = GetAudio(audioName);
 		return chosenAudio != null;
 	}
 
-	public Audio GetAudio(string audioName)
+	public AudioEntry GetAudio(string audioName)
 	{
 		audioName = audioName.ToLower().Trim();
-		return Array.Find(audioArray, audio => audio.name.ToLower().Equals(audioName));
+		return audioEntries.Find(entry => entry.name.ToLower().Equals(audioName));
 	}
 
-	private AudioClip GetRandomClip(Audio target)
+	private AudioClip GetRandomClip(AudioEntry target)
 	{
 		int index = UnityRandom.Range(0, target.clips.Length);
 		return target[index];
