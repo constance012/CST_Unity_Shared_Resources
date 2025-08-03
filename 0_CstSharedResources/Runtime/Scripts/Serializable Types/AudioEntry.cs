@@ -9,26 +9,26 @@ using UnityEngine.Audio;
 [Serializable]
 public class AudioEntry
 {
-	public enum AudioType
+	public enum AudioCategory
 	{
 		Sound,
 		Music,
 		Ambience
 	}
 
-	public string name;
-	public AudioType audioType;
+	public string entryName;
+	public AudioCategory audioCategory;
 
 	[Space] public AudioClip[] clips;
-	[Space] public AudioMixerGroup mixerGroup;
 
 	[Range(0f, 1f), Space] public float volume = 1f;
 	[Range(-3f, 3f)] public float pitch = 1f;
-
 	public bool isLooped;
-	[HideInInspector] public AudioSource source;
+	public bool playOnAwake;
+
+	[HideInInspector] public AudioMixerGroup mixerGroup;
+	[HideInInspector] public AudioSource audioSource;
 
 	public AudioClip this[int index] => clips[index];
-
-	public int ClipCount => clips.Length;
+	public int TotalClips => clips.Length;
 }

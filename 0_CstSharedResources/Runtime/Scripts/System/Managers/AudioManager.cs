@@ -1,34 +1,26 @@
 ﻿using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityRandom = UnityEngine.Random;
 
 [AddComponentMenu("Singletons/Audio Manager")]
 public sealed class AudioManager : PersistentSingleton<AudioManager>
 {
-	[Header("Audio Array"), Space]
-	public List<AudioEntry> audioEntries;
+	[Header("Audio Mixer Groups"), Space]
+	[SerializeField] private SerializedDictionary<AudioEntry.AudioCategory, AudioMixerGroup> mixerGroupMaps;
+
+	[Header("A list of Audio Entries"), Space]
+	[SerializeField] private List<AudioEntry> audioEntries;
 
 	protected override void Awake()
 	{
 		base.Awake();
-
-		foreach (var audio in audioEntries)
-		{
-			GameObject audioSourceHolder = new GameObject(audio.name);
-			audioSourceHolder.transform.SetParent(transform.Find(audio.audioType.ToString()));
-
-			// Add the Audio Source to the Manager's holder for each clip.
-			audio.source = audioSourceHolder.AddComponent<AudioSource>();
-			audio.source.outputAudioMixerGroup = audio.mixerGroup;
-			audio.source.volume = audio.volume;
-			audio.source.pitch = audio.pitch;
-			audio.source.loop = audio.isLooped;
-			audio.source.playOnAwake = false;
-		}
+		InitializeAudioEntries();
 	}
 
 	/// <summary>
-	/// Play the audio with a random clip and default pitch.
+	/// Plays an audio entry with a random clip and default pitch.
 	/// </summary>
 	/// <param name="audioName"></param>
 	public void Play(string audioName)
@@ -39,17 +31,17 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 			return;
 		}
 
-		chosenAudio.source.clip = GetRandomClip(chosenAudio);
+		chosenAudio.audioSource.clip = GetRandomClip(chosenAudio);
 
-		chosenAudio.source.Play();
+		chosenAudio.audioSource.Play();
 	}
 
 	/// <summary>
-	/// Play the audio with the specified clip and pitch.
+	/// Plays an audio entry at the clip index with a specified pitch.
 	/// </summary>
 	/// <param name="audioName"></param>
-	/// <param name="clipIndex"></param>
-	/// <param name="pitch"></param>
+	/// <param name="clipIndex"> The index of the clip to play. </param>
+	/// <param name="pitch"> The specified pitch value. </param>
 	public void Play(string audioName, int clipIndex, float pitch)
 	{
 		if (!TryGetAudio(audioName, out AudioEntry chosenAudio))
@@ -58,18 +50,18 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 			return;
 		}
 
-		chosenAudio.source.clip = chosenAudio[clipIndex];
-		chosenAudio.source.pitch = pitch;
+		chosenAudio.audioSource.clip = chosenAudio[clipIndex];
+		chosenAudio.audioSource.pitch = pitch;
 
-		chosenAudio.source.Play();
+		chosenAudio.audioSource.Play();
 	}
 
 	/// <summary>
-	/// Play the audio with random clip and pitch;
+	/// Plays an audio entry with a random clip in a specified pitch range.
 	/// </summary>
 	/// <param name="audioName"></param>
-	/// <param name="min"></param>
-	/// <param name="max"></param>
+	/// <param name="min"> The minimum pitch. </param>
+	/// <param name="max"> The maximum pitch. </param>
 	public void PlayWithRandomPitch(string audioName, float min, float max)
 	{
 		if (!TryGetAudio(audioName, out AudioEntry chosenAudio))
@@ -78,12 +70,16 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 			return;
 		}
 
-		chosenAudio.source.clip = GetRandomClip(chosenAudio);
-		chosenAudio.source.pitch = UnityRandom.Range(min, max);
+		chosenAudio.audioSource.clip = GetRandomClip(chosenAudio);
+		chosenAudio.audioSource.pitch = UnityRandom.Range(min, max);
 
-		chosenAudio.source.Play();
+		chosenAudio.audioSource.Play();
 	}
 
+	/// <summary>
+	/// Stops an audio entry.
+	/// </summary>
+	/// <param name="audioName"></param>
 	public void Stop(string audioName)
 	{
 		if (!TryGetAudio(audioName, out AudioEntry chosenAudio))
@@ -92,27 +88,63 @@ public sealed class AudioManager : PersistentSingleton<AudioManager>
 			return;
 		}
 
-		chosenAudio.source.Stop();
+		chosenAudio.audioSource.Stop();
 	}
 
+	/// <summary>
+	/// Sets a new volume for a specified audio entry.
+	/// </summary>
+	/// <param name="audioName"></param>
+	/// <param name="newVolume"> The new volume value. </param>
+	/// <param name="resetToDefault"> If this is true, resets the entry's volume to default. </param>
 	public void SetVolume(string audioName, float newVolume, bool resetToDefault = false)
 	{
 		if (TryGetAudio(audioName, out AudioEntry chosenAudio))
 		{
-			chosenAudio.source.volume = resetToDefault ? chosenAudio.volume : newVolume;
+			chosenAudio.audioSource.volume = resetToDefault ? chosenAudio.volume : newVolume;
 		}
 	}
 
+	/// <summary>
+	/// Tries gettings an audio entry with a specified name.
+	/// </summary>
+	/// <param name="audioName"></param>
+	/// <param name="chosenAudio"> The retrieved entry, null if it was not found. </param>
+	/// <returns></returns>
 	public bool TryGetAudio(string audioName, out AudioEntry chosenAudio)
 	{
 		chosenAudio = GetAudio(audioName);
 		return chosenAudio != null;
 	}
 
-	public AudioEntry GetAudio(string audioName)
+	private AudioEntry GetAudio(string audioName)
 	{
 		audioName = audioName.ToLower().Trim();
-		return audioEntries.Find(entry => entry.name.ToLower().Equals(audioName));
+		return audioEntries.Find(entry => entry.entryName.ToLower().Equals(audioName));
+	}
+
+	private void InitializeAudioEntries()
+	{
+		foreach (var entry in audioEntries)
+		{
+			string audioTypeName = entry.audioCategory.ToString();
+			var parent = transform.Find(audioTypeName);
+
+			if (parent == null)
+			{
+				parent = new GameObject(audioTypeName).transform;
+			}
+
+			GameObject audioSourceHolder = new(entry.entryName);
+			audioSourceHolder.transform.SetParent(parent);
+
+			entry.audioSource = audioSourceHolder.AddComponent<AudioSource>();
+			entry.audioSource.outputAudioMixerGroup = mixerGroupMaps[entry.audioCategory];
+			entry.audioSource.volume = entry.volume;
+			entry.audioSource.pitch = entry.pitch;
+			entry.audioSource.loop = entry.isLooped;
+			entry.audioSource.playOnAwake = entry.playOnAwake;
+		}
 	}
 
 	private AudioClip GetRandomClip(AudioEntry target)
