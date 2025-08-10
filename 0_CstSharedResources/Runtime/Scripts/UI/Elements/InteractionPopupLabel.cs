@@ -5,7 +5,7 @@ using static Interactable;
 public class InteractionPopupLabel : MonoBehaviour
 {
 	[Header("References"), Space]
-	[SerializeField] private Animator animator;
+	[SerializeField] private TweenableUIMaster tweenable;
 
 	[Space, SerializeField] private TextMeshProUGUI label;
 	[SerializeField] private TextMeshProUGUI keyboardCue;
@@ -20,7 +20,7 @@ public class InteractionPopupLabel : MonoBehaviour
 
 	public void RestartAnimation()
 	{
-		animator.SetTrigger("Restart");
+		tweenable.StartTweening(true);
 	}
 
 	public void SetLabelName(string name)
@@ -40,8 +40,12 @@ public class InteractionPopupLabel : MonoBehaviour
 	{
 		SetLabelName("");
 
-		// Needs fix.
-		keyboardCue.text = "";
+#if ENABLE_INPUT_SYSTEM
+		keyboardCue.text = NewInputManager.Instance.GetDisplayString(KeybindingActions.Interact);
+		
+#elif ENABLE_LEGACY_INPUT_MANAGER
+		keyboardCue.text = LegacyInputManager.Instance.GetKeyForAction(KeybindingActions.Interact).ToString();
+#endif
 
 		switch (inputSource)
 		{
