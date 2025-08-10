@@ -35,11 +35,14 @@ public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPo
 	[SerializeField] private UpdateType updateType;
 	[SerializeField] private bool ignoreTimeScale;
 
+	[Header("Reset Values"), Space]
+	[SerializeField] private bool resetValueOnDestroyOrDisable;
+	[SerializeField] private bool resetValueBeforeTweening;
+
 	[Header("Others"), Space]
 	[SerializeField] private bool tweenInRelativeSpace;
 	[SerializeField] private bool tweenOnEnable;
 	[SerializeField] private bool tweenOnMouseHover;
-	[SerializeField] private bool resetValueOnDestroyOrDisable;
 	
 	[Header("On Complete Callback (Tweeners and Sequences)"), Space]
 	[SerializeField] private UnityEvent onCompleteCallback;
@@ -63,7 +66,9 @@ public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPo
 		for (int i = 0; i < tweeners.Count; i++)
 		{
 			if (string.IsNullOrEmpty(tweeners[i].name))
+			{
 				tweeners[i].ValidateDefaultValues(i);
+			}
 		}
 	}
 
@@ -85,25 +90,33 @@ public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPo
 		CheckForRequireComponents();
 
 		if (!dontSetStartValuesOnAwake)
+		{
 			SetStartValues();
+		}
 	}
 
 	public async void OnEnable()
 	{
 		if (tweenOnEnable && !_setActiveInProgress)
+		{
 			await AsyncStartTweening(true);
+		}
 	}
 
 	private void OnDisable()
 	{
 		if (resetValueOnDestroyOrDisable)
+		{
 			SetStartValues();
+		}
 	}
 
 	private void OnDestroy()
 	{
 		if (resetValueOnDestroyOrDisable)
+		{
 			SetStartValues();
+		}
 	}
 
 	private void Start()
@@ -114,13 +127,17 @@ public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPo
 	public async void OnPointerEnter(PointerEventData e)
 	{
 		if (tweenOnMouseHover && !_setActiveInProgress)
+		{
 			await AsyncStartTweening(true);
+		}
 	}
 
 	public async void OnPointerExit(PointerEventData e)
 	{
 		if (tweenOnMouseHover && !_setActiveInProgress)
+		{
 			await AsyncStartTweening(false);
+		}
 	}
 	
 	public async Task SetActive(bool active)
@@ -133,7 +150,9 @@ public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPo
 			await AsyncStartTweening(true);
 		}
 		else
+		{
 			await AsyncStartTweening(false);
+		}
 
 		_setActiveInProgress = false;
 	}
@@ -147,11 +166,18 @@ public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPo
 	{
 		StopAll(true);
 
+		if (resetValueBeforeTweening)
+		{
+			SetStartValues();
+		}
+
 		bool applyCallback = (forwards && callbackPeriod == TweenCallbackPeriod.AfterForwardTween) ||
 							 (!forwards && callbackPeriod == TweenCallbackPeriod.AfterBackwardTween);
 
 		if (tweeners.Count == 0)
+		{
 			return;
+		}
 		else if (tweeners.Count == 1)
 		{
 			Tween tween = tweeners[0].CreateTween(forwards)
@@ -215,51 +241,79 @@ public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPo
 			{
 				case UITweeningType.Scale:
 					if (tweener.useCurrentValueAsStart)
+					{
 						tweener.startValue = _rectTransform.localScale;
+					}
 					else if (tweener.overrideStartValue)
+					{
 						_rectTransform.localScale = tweener.startValue;
+					}
 					break;
 
 				case UITweeningType.SizeDelta:
 					if (tweener.useCurrentValueAsStart)
+					{
 						tweener.startValue = _rectTransform.sizeDelta;
+					}
 					else if (tweener.overrideStartValue)
+					{
 						_rectTransform.sizeDelta = tweener.startValue;
+					}
 					break;
 
 				case UITweeningType.Move:
 					if (tweener.useCurrentValueAsStart)
+					{
 						tweener.startValue = _rectTransform.anchoredPosition;
+					}
 					else if (tweener.overrideStartValue)
+					{
 						_rectTransform.anchoredPosition = tweener.startValue;
+					}
 					break;
 				
 				case UITweeningType.Rotate:
 					if (tweener.useCurrentValueAsStart)
+					{
 						tweener.startValue = _rectTransform.eulerAngles;
+					}
 					else if (tweener.overrideStartValue)
+					{
 						_rectTransform.eulerAngles = tweener.startValue;
+					}
 					break;
 				
 				case UITweeningType.FadeCanvasGroup:
 					if (tweener.useCurrentValueAsStart)
+					{
 						tweener.startValue = new Vector3(_canvasGroup.alpha, 0f, 0f);
+					}
 					else if (tweener.overrideStartValue)
+					{
 						_canvasGroup.alpha = tweener.startValue.x;
+					}
 					break;
 				
 				case UITweeningType.FadeGraphic:
 					if (tweener.useCurrentValueAsStart)
+					{
 						tweener.startValue = new Vector3(_graphic.color.a, 0f, 0f);
+					}
 					else if (tweener.overrideStartValue)
+					{
 						_graphic.DOFade(tweener.startValue.x, 0f);
+					}
 					break;
 
 				case UITweeningType.Color:
 					if (tweener.useCurrentValueAsStart)
+					{
 						tweener.startValue = ColorToVector3(_graphic.color);
+					}
 					else if (tweener.overrideStartValue)
+					{
 						_graphic.color = Vector3ToColor(tweener.startValue);
+					}
 					break;
 			}
 		}
@@ -268,7 +322,9 @@ public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPo
 	private void CheckForRequireComponents()
 	{
 		if (gameObjectToTween == null)
+		{
 			gameObjectToTween = gameObject;
+		}
 
 		_tweenPool = new TweenPool();
 		_rectTransform = gameObjectToTween.GetComponent<RectTransform>();
@@ -282,12 +338,16 @@ public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPo
 				case UITweeningType.Color:
 				case UITweeningType.FadeGraphic:
 					if (!gameObjectToTween.TryGetComponent(out _graphic))
+					{
 						_graphic = gameObjectToTween.AddComponent<Image>();
+					}
 					break;
 
 				case UITweeningType.FadeCanvasGroup:
 					if (!gameObjectToTween.TryGetComponent(out _canvasGroup))
+					{
 						_canvasGroup = gameObjectToTween.AddComponent<CanvasGroup>();
+					}
 					break;
 			}
 		}
