@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface IVisitor
+namespace CST.Shared.Resources
 {
-	void Visit<T>(T visitable) where T : Component, IVisitable;
+	public interface IVisitor
+	{
+		void Visit<T>(T visitable) where T : Component, IVisitable;
+	}
 }

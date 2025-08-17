@@ -1,37 +1,40 @@
 using UnityEngine;
 
-public abstract class TransformConstraintBase : MonoBehaviour
+namespace CST.Shared.Resources
 {
-	[Header("Source Object"), Space]
-	[SerializeField] protected Transform sourceObject;
-
-	[Header("Constrain Positions"), Space]
-	[SerializeField] protected bool useConstraint;
-	[SerializeField] protected Vector3 offset;
-	[SerializeField] protected ConstrainScope scope;
-
-	protected void LateUpdate()
+	public abstract class TransformConstraintBase : MonoBehaviour
 	{
-		if (useConstraint)
+		[Header("Source Object"), Space]
+		[SerializeField] protected Transform sourceObject;
+
+		[Header("Constrain Positions"), Space]
+		[SerializeField] protected bool useConstraint;
+		[SerializeField] protected Vector3 offset;
+		[SerializeField] protected ConstrainScope scope;
+
+		protected void LateUpdate()
 		{
-			switch (scope)
+			if (useConstraint)
 			{
-				case ConstrainScope.Global:
-					ConstrainGlobal();
-					break;
-				case ConstrainScope.Local:
-					ConstrainLocal();
-					break;
+				switch (scope)
+				{
+					case ConstrainScope.Global:
+						ConstrainGlobal();
+						break;
+					case ConstrainScope.Local:
+						ConstrainLocal();
+						break;
+				}
 			}
 		}
-	}
-	
-	protected abstract void ConstrainLocal();
-	protected abstract void ConstrainGlobal();
 
-	protected enum ConstrainScope
-	{
-		Global,
-		Local
+		protected abstract void ConstrainLocal();
+		protected abstract void ConstrainGlobal();
+
+		protected enum ConstrainScope
+		{
+			Global,
+			Local
+		}
 	}
 }

@@ -4,18 +4,47 @@ using UnityEngine;
 /// <summary>
 /// A scriptable object for creating a set of keys use in keybinding.
 /// </summary>
-[CreateAssetMenu(fileName = "New Keyset", menuName = "Keybinding/Keyset")]
-public class Keyset : ScriptableObject
+namespace CST.Shared.Resources
 {
-	[Header("List of keys"), Space]
-	public SerializedDictionary<KeybindingActions, KeyCode> keyTable = new SerializedDictionary<KeybindingActions, KeyCode>();
-
-	public int TotalKeys => keyTable.Count;
-	public int LastIndex => TotalKeys - 1;
-	
-	public KeyCode this[KeybindingActions action]
+	[CreateAssetMenu(fileName = "New Keyset", menuName = "Keybinding/Keyset")]
+	public class Keyset : ScriptableObject
 	{
-		get { return keyTable[action]; }
-		set { keyTable[action] = value; }
+		[Header("List of keys"), Space]
+		public SerializedDictionary<KeybindingActions, KeyCode> keyTable = new SerializedDictionary<KeybindingActions, KeyCode>();
+
+		public int TotalKeys => keyTable.Count;
+		public int LastIndex => TotalKeys - 1;
+
+		public KeyCode this[KeybindingActions action]
+		{
+			get { return keyTable[action]; }
+			set { keyTable[action] = value; }
+		}
+	}
+
+	public enum KeybindingActions
+	{
+		Attack,
+		ToggleAimMode,
+		Aiming,
+		MoveLeft,
+		MoveRight,
+		MoveUp,
+		MoveDown,
+		Movement,
+		ContinueDialogue,
+		Interact,
+		Reload,
+		BackToMenu,
+		SkipPlayable
+	}
+
+	public enum MouseButtonType
+	{
+		Left,
+		Right,
+		Middle,
+		Forward,
+		Backward
 	}
 }

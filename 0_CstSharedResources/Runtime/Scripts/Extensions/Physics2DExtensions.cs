@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 
-public static class Physics2DExtensions
+namespace CST.Shared.Resources
 {
-	public static bool Raycast(Ray2D ray, out RaycastHit2D hitInfo, float distance, int layerMask)
+	public static class Physics2DExtensions
 	{
-		Vector2 origin = ray.origin;
-		Vector2 direction = ray.direction;
+		public static bool Raycast(Ray2D ray, out RaycastHit2D hitInfo, float distance, int layerMask)
+		{
+			Vector2 origin = ray.origin;
+			Vector2 direction = ray.direction;
 
-		hitInfo = Physics2D.Raycast(origin, direction, distance, layerMask);
+			hitInfo = Physics2D.Raycast(origin, direction, distance, layerMask);
 
-		return hitInfo.collider != null;
-	}
+			return hitInfo.collider != null;
+		}
 
-	public static bool Raycast(Vector2 origin, Vector2 direction, out RaycastHit2D hitInfo, float distance, int layerMask)
-	{
-		hitInfo = Physics2D.Raycast(origin, direction, distance, layerMask);
+		public static bool Raycast(Vector2 origin, Vector2 direction, out RaycastHit2D hitInfo, float distance, int layerMask)
+		{
+			hitInfo = Physics2D.Raycast(origin, direction, distance, layerMask);
 
-		return hitInfo.collider != null;
+			return hitInfo.collider != null;
+		}
 	}
 }

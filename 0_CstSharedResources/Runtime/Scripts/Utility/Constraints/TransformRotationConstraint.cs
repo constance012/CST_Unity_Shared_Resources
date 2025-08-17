@@ -1,15 +1,18 @@
 using UnityEngine;
 
-[AddComponentMenu("Transform Constraints/Transform Rotation Constraint", 1)]
-public sealed class TransformRotationConstraint : TransformConstraintBase
+namespace CST.Shared.Resources
 {
-	protected override void ConstrainGlobal()
+	[AddComponentMenu("Transform Constraints/Transform Rotation Constraint", 1)]
+	public sealed class TransformRotationConstraint : TransformConstraintBase
 	{
-		transform.rotation = Quaternion.Euler(sourceObject.eulerAngles + offset);
-	}
+		protected override void ConstrainGlobal()
+		{
+			transform.rotation = Quaternion.Euler(sourceObject.eulerAngles + offset);
+		}
 
-	protected override void ConstrainLocal()
-	{
-		transform.localRotation = Quaternion.Euler(sourceObject.localEulerAngles + offset);
+		protected override void ConstrainLocal()
+		{
+			transform.localRotation = Quaternion.Euler(sourceObject.localEulerAngles + offset);
+		}
 	}
 }

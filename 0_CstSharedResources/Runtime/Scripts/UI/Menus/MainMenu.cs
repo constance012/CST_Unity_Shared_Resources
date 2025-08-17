@@ -3,66 +3,69 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public sealed class MainMenu : MonoBehaviour
+namespace CST.Shared.Resources
 {
-	[Header("Menu References"), Space]
-	[SerializeField] private TweenableUIMaster mainMenu;
-	[SerializeField] private TweenableUIMaster settingsMenu;
-
-	[Header("Audio Mixer"), Space]
-	[SerializeField] private AudioMixer mixer;
-
-	// Private fields.
-	private static bool _userSettingsLoaded;
-
-	private void Start()
+	public sealed class MainMenu : MonoBehaviour
 	{
-		#if UNITY_EDITOR
-			_userSettingsLoaded = false;
-		#endif
+		[Header("Menu References"), Space]
+		[SerializeField] private TweenableUIMaster mainMenu;
+		[SerializeField] private TweenableUIMaster settingsMenu;
 
-		LoadUserSettings();
-	}
+		[Header("Audio Mixer"), Space]
+		[SerializeField] private AudioMixer mixer;
 
-	#region Callback Methods for UI.
-	public async void OpenSettingsMenu()
-	{
-		await mainMenu.SetActive(false);
-		await settingsMenu.SetActive(true);
-	}
+		// Private fields.
+		private static bool _userSettingsLoaded;
 
-	public void StartGame()
-	{
-		DOTween.Clear();
-		SceneLoader.Instance.LoadSceneAsync(GlobalDefines.GAMEPLAY_SCENE_PATH);
-	}
-
-	public void QuitGame()
-	{
-		Debug.Log("Quitting player application...");
-		DOTween.Clear();
-		Application.Quit();
-	}
-	#endregion
-
-	private void LoadUserSettings()
-	{
-		if (!_userSettingsLoaded)
+		private void Start()
 		{
-			Debug.Log("Loading user settings...");
+#if UNITY_EDITOR
+			_userSettingsLoaded = false;
+#endif
 
-			//CursorManager.Instance.SwitchCursorTexture(CursorTextureType.Default);
+			LoadUserSettings();
+		}
 
-			mixer.SetFloat("masterVol", UserSettings.ToMixerDecibel(UserSettings.MasterVolume));
-			mixer.SetFloat("musicVol", UserSettings.ToMixerDecibel(UserSettings.MusicVolume));
-			mixer.SetFloat("soundVol", UserSettings.ToMixerDecibel(UserSettings.SoundVolume));
-			mixer.SetFloat("ambienceVol", UserSettings.ToMixerDecibel(UserSettings.AmbienceVolume));
+		#region Callback Methods for UI.
+		public async void OpenSettingsMenu()
+		{
+			await mainMenu.SetActive(false);
+			await settingsMenu.SetActive(true);
+		}
 
-			QualitySettings.SetQualityLevel(UserSettings.QualityLevel);
-			Application.targetFrameRate = UserSettings.TargetFramerate;
-			QualitySettings.vSyncCount = Convert.ToInt32(UserSettings.UseVsync);
+		public void StartGame()
+		{
+			DOTween.Clear();
+			SceneLoader.Instance.LoadSceneAsync(GlobalDefines.GAMEPLAY_SCENE_PATH);
+		}
 
-			_userSettingsLoaded = true;
+		public void QuitGame()
+		{
+			Debug.Log("Quitting player application...");
+			DOTween.Clear();
+			Application.Quit();
+		}
+		#endregion
+
+		private void LoadUserSettings()
+		{
+			if (!_userSettingsLoaded)
+			{
+				Debug.Log("Loading user settings...");
+
+				//CursorManager.Instance.SwitchCursorTexture(CursorTextureType.Default);
+
+				mixer.SetFloat("masterVol", UserSettings.ToMixerDecibel(UserSettings.MasterVolume));
+				mixer.SetFloat("musicVol", UserSettings.ToMixerDecibel(UserSettings.MusicVolume));
+				mixer.SetFloat("soundVol", UserSettings.ToMixerDecibel(UserSettings.SoundVolume));
+				mixer.SetFloat("ambienceVol", UserSettings.ToMixerDecibel(UserSettings.AmbienceVolume));
+
+				QualitySettings.SetQualityLevel(UserSettings.QualityLevel);
+				Application.targetFrameRate = UserSettings.TargetFramerate;
+				QualitySettings.vSyncCount = Convert.ToInt32(UserSettings.UseVsync);
+
+				_userSettingsLoaded = true;
+			}
 		}
 	}
 }

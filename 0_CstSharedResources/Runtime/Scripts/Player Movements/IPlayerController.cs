@@ -1,5 +1,8 @@
-public interface IPlayerController
+namespace CST.Shared.Resources
 {
-	public  void ReadInputValues();
-	public void UpdateVelocity();
+	public interface IPlayerController
+	{
+		public void ReadInputValues();
+		public void UpdateVelocity();
+	}
 }

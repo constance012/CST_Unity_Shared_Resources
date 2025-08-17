@@ -1,26 +1,29 @@
 ﻿using UnityEngine;
 
-public class SegmentedWorldHealthBar : SegmentedHealthBar
+namespace CST.Shared.Resources
 {
-	[Header("World Position"), Space]
-	[SerializeField] private Transform worldPos;
-	
-	// Private fields.
-	private static Canvas worldCanvas;
-
-	protected override void Awake()
+	public class SegmentedWorldHealthBar : SegmentedHealthBar
 	{
-		base.Awake();
-		if (worldCanvas == null)
+		[Header("World Position"), Space]
+		[SerializeField] private Transform worldPos;
+
+		// Private fields.
+		private static Canvas worldCanvas;
+
+		protected override void Awake()
 		{
-			worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).GetComponent<Canvas>();
-		}
-		
-		transform.SetParent(worldCanvas.transform, false);
-	}
+			base.Awake();
+			if (worldCanvas == null)
+			{
+				worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).GetComponent<Canvas>();
+			}
 
-	private void LateUpdate()
-	{
-		transform.position = worldPos.position;
+			transform.SetParent(worldCanvas.transform, false);
+		}
+
+		private void LateUpdate()
+		{
+			transform.position = worldPos.position;
+		}
 	}
 }

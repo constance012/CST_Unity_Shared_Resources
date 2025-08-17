@@ -1,80 +1,83 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TabGroup : MonoBehaviour
+namespace CST.Shared.Resources
 {
-	[Header("Section Tab Buttons"), Space]
-	[SerializeField, ReadOnly] private List<MenuTabButton> tabButtons;
-
-	[Header("Color Tints"), Space]
-	[SerializeField] private Color normalColor;
-	[SerializeField] private Color hoveringColor;
-	[SerializeField] private Color selectedColor;
-
-	// Private fields.
-	private MenuTabButton _selectedTab;
-
-	public void Subscribe(MenuTabButton button)
+	public class TabGroup : MonoBehaviour
 	{
-		tabButtons ??= new List<MenuTabButton>();
+		[Header("Section Tab Buttons"), Space]
+		[SerializeField, ReadOnly] private List<MenuTabButton> tabButtons;
 
-		tabButtons.Add(button);
-		tabButtons.Sort(CompareTabButtons);
-	}
+		[Header("Color Tints"), Space]
+		[SerializeField] private Color normalColor;
+		[SerializeField] private Color hoveringColor;
+		[SerializeField] private Color selectedColor;
 
-	public void OnTabEnter(MenuTabButton target)
-	{
-		ResetTabColors();
+		// Private fields.
+		private MenuTabButton _selectedTab;
 
-		// Change the color to hover if the tab is not selected.
-		if(_selectedTab == null || target != _selectedTab)
-			target.SetGraphicColor(hoveringColor);
-	}
-	
-	public void OnTabExit()
-	{
-		ResetTabColors();
-	}
-
-	public bool TrySelectTab(MenuTabButton target)
-	{
-		bool different = _selectedTab != target;
-
-		if (different)
+		public void Subscribe(MenuTabButton button)
 		{
-			_selectedTab = target;
+			tabButtons ??= new List<MenuTabButton>();
 
+			tabButtons.Add(button);
+			tabButtons.Sort(CompareTabButtons);
+		}
+
+		public void OnTabEnter(MenuTabButton target)
+		{
 			ResetTabColors();
-			target.SetGraphicColor(selectedColor);
 
-			int currentIndex = target.transform.GetSiblingIndex();
+			// Change the color to hover if the tab is not selected.
+			if (_selectedTab == null || target != _selectedTab)
+				target.SetGraphicColor(hoveringColor);
+		}
 
-			for (int i = 0; i < tabButtons.Count; i++)
+		public void OnTabExit()
+		{
+			ResetTabColors();
+		}
+
+		public bool TrySelectTab(MenuTabButton target)
+		{
+			bool different = _selectedTab != target;
+
+			if (different)
 			{
-				tabButtons[i].SetContentActive(i == currentIndex);
+				_selectedTab = target;
+
+				ResetTabColors();
+				target.SetGraphicColor(selectedColor);
+
+				int currentIndex = target.transform.GetSiblingIndex();
+
+				for (int i = 0; i < tabButtons.Count; i++)
+				{
+					tabButtons[i].SetContentActive(i == currentIndex);
+				}
+			}
+
+			return different;
+		}
+
+		private void ResetTabColors()
+		{
+			// Reset all other tabs' colors to normal except the selected one.
+			foreach (MenuTabButton tab in tabButtons)
+			{
+				if (_selectedTab != null && _selectedTab == tab)
+					continue;
+
+				tab.SetGraphicColor(normalColor);
 			}
 		}
 
-		return different;
-	}
-
-	private void ResetTabColors()
-	{
-		// Reset all other tabs' colors to normal except the selected one.
-		foreach (MenuTabButton tab in tabButtons)
+		private int CompareTabButtons(MenuTabButton a, MenuTabButton b)
 		{
-			if (_selectedTab != null && _selectedTab == tab)
-				continue;
+			int indexA = a.transform.GetSiblingIndex();
+			int indexB = b.transform.GetSiblingIndex();
 
-			tab.SetGraphicColor(normalColor);
+			return indexA - indexB;
 		}
-	}
-
-	private int CompareTabButtons(MenuTabButton a, MenuTabButton b)
-	{
-		int indexA = a.transform.GetSiblingIndex();
-		int indexB = b.transform.GetSiblingIndex();
-
-		return indexA - indexB;
 	}
 }

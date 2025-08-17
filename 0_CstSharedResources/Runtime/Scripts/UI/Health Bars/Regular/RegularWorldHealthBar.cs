@@ -1,33 +1,36 @@
 ﻿using UnityEngine;
 
-public class RegularWorldHealthBar : RegularHealthBar
+namespace CST.Shared.Resources
 {
-	[Header("World Position"), Space]
-	[SerializeField] private Transform worldPos;
-	
-	private static Canvas worldCanvas;
-
-	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-	private static void ClearStatic()
+	public class RegularWorldHealthBar : RegularHealthBar
 	{
-		worldCanvas = null;
-	}
+		[Header("World Position"), Space]
+		[SerializeField] private Transform worldPos;
 
-	protected override void Awake()
-	{
-		base.Awake();
+		private static Canvas worldCanvas;
 
-		if (worldCanvas == null)
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void ClearStatic()
 		{
-			worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).GetComponent<Canvas>();
-			worldCanvas.worldCamera = Camera.main;
+			worldCanvas = null;
 		}
-		
-		transform.SetParent(worldCanvas.transform);
-	}
 
-	private void LateUpdate()
-	{
-		transform.position = worldPos.position;
+		protected override void Awake()
+		{
+			base.Awake();
+
+			if (worldCanvas == null)
+			{
+				worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).GetComponent<Canvas>();
+				worldCanvas.worldCamera = Camera.main;
+			}
+
+			transform.SetParent(worldCanvas.transform);
+		}
+
+		private void LateUpdate()
+		{
+			transform.position = worldPos.position;
+		}
 	}
 }

@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GenericUpgradeBase<TUnit> : UpgradeBase where TUnit : ScriptableObject
+namespace CST.Shared.Resources
 {
-	[Header("Units List"), Space]
-	public List<TUnit> unitsToApply = new List<TUnit>();
+	public abstract class GenericUpgradeBase<TUnit> : UpgradeBase where TUnit : ScriptableObject
+	{
+		[Header("Units List"), Space]
+		public List<TUnit> unitsToApply = new List<TUnit>();
+	}
 }

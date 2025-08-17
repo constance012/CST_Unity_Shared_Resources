@@ -1,32 +1,35 @@
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
 
-public sealed class PoolableParticleSystem : PoolableEffectBase
+namespace CST.Shared.Resources
 {
-	[Header("System References"), Space]
-	[SerializeField] private ParticleSystem effect;
-
-	public ParticleSystem Effect => effect;
-
-	private void Awake()
+	public sealed class PoolableParticleSystem : PoolableEffectBase
 	{
-		MainModule main = effect.main;
-		main.playOnAwake = false;
-	}
+		[Header("System References"), Space]
+		[SerializeField] private ParticleSystem effect;
 
-	public override void Play() => effect.Play();
-	public override void Stop() => effect.Stop();
-	public override void Clear() => effect.Clear();
+		public ParticleSystem Effect => effect;
 
-	public void SetCustomSimulationSpace(Transform space)
-	{
-		MainModule main = effect.main;
-		main.customSimulationSpace = space;
-	}
+		private void Awake()
+		{
+			MainModule main = effect.main;
+			main.playOnAwake = false;
+		}
 
-	protected override void BeforeDeallocate()
-	{
-		base.BeforeDeallocate();
-		SetCustomSimulationSpace(null);
+		public override void Play() => effect.Play();
+		public override void Stop() => effect.Stop();
+		public override void Clear() => effect.Clear();
+
+		public void SetCustomSimulationSpace(Transform space)
+		{
+			MainModule main = effect.main;
+			main.customSimulationSpace = space;
+		}
+
+		protected override void BeforeDeallocate()
+		{
+			base.BeforeDeallocate();
+			SetCustomSimulationSpace(null);
+		}
 	}
 }

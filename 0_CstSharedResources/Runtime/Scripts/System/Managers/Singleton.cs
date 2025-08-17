@@ -1,46 +1,49 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// Makes a temporary singleton reference for the current scene only, which will be destroy upon scene transitions.
-/// </summary>
-/// <typeparam name="T"></typeparam>
-public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+namespace CST.Shared.Resources
 {
-	public static T Instance { get; protected set; }
-
-	protected bool _hasSingleton;
-
-	protected virtual void Awake()
-	{
-		MakeSingleton();
-	}
-
 	/// <summary>
-	/// This method is automatically called in awake. You can manually call this method to set Instance forcefully.
+	/// Makes a temporary singleton reference for the current scene only, which will be destroy upon scene transitions.
 	/// </summary>
-	protected void MakeSingleton()
+	/// <typeparam name="T"></typeparam>
+	public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 	{
-		if (_hasSingleton)
-			return;
+		public static T Instance { get; protected set; }
 
-		if (Instance == null)
+		protected bool _hasSingleton;
+
+		protected virtual void Awake()
 		{
-			SetInstance();
+			MakeSingleton();
 		}
-		else
+
+		/// <summary>
+		/// This method is automatically called in awake. You can manually call this method to set Instance forcefully.
+		/// </summary>
+		protected void MakeSingleton()
 		{
-			string typeName = typeof(T).Name;
-			Debug.LogWarning($"More than one Instance of {typeName} found!! Destroy the newest one.");
+			if (_hasSingleton)
+				return;
 
-			Destroy(this.gameObject);
+			if (Instance == null)
+			{
+				SetInstance();
+			}
+			else
+			{
+				string typeName = typeof(T).Name;
+				Debug.LogWarning($"More than one Instance of {typeName} found!! Destroy the newest one.");
 
-			return;
+				Destroy(this.gameObject);
+
+				return;
+			}
 		}
-	}
 
-	protected virtual void SetInstance()
-	{
-		Instance = this as T;
-		_hasSingleton = true;
+		protected virtual void SetInstance()
+		{
+			Instance = this as T;
+			_hasSingleton = true;
+		}
 	}
 }

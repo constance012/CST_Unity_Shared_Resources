@@ -1,5 +1,8 @@
-public interface IHealable
+namespace CST.Shared.Resources
 {
-	bool CanBeHealed { get; }
-	void Heal(int amount);
+	public interface IHealable
+	{
+		bool CanBeHealed { get; }
+		void Heal(int amount);
+	}
 }

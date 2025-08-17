@@ -1,6 +1,9 @@
 using System;
 
-public interface IUpgradeApplicationReceiver
+namespace CST.Shared.Resources
 {
-	void OnUpgradeApplied(Type type, UpgradeBase upgrade);
+	public interface IUpgradeApplicationReceiver
+	{
+		void OnUpgradeApplied(Type type, UpgradeBase upgrade);
+	}
 }
