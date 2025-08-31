@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace CST.Shared.Resources
 {
+	[RequireComponent(typeof(Rigidbody2D))]
 	public class TopDownPlayerController : MonoBehaviour, IPlayerController, IUpgradeApplicationReceiver
 	{
 		[Header("References"), Space]
@@ -53,7 +54,7 @@ namespace CST.Shared.Resources
 		public void ReadInputValues()
 		{
 #if ENABLE_INPUT_SYSTEM
-		_movementDirection = NewInputManager.Instance.ReadValue<Vector2>(KeybindingActions.Movement);
+			_movementDirection = NewInputManager.Instance.ReadValue<Vector2>(KeybindingActions.Movement);
 
 #elif ENABLE_LEGACY_INPUT_MANAGER
 			_movementDirection.x = LegacyInputManager.Instance.GetAxisRaw("Horizontal");

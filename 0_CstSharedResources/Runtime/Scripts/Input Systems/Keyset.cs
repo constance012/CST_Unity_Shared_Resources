@@ -24,19 +24,20 @@ namespace CST.Shared.Resources
 
 	public enum KeybindingActions
 	{
-		Attack,
-		ToggleAimMode,
-		Aiming,
-		MoveLeft,
-		MoveRight,
-		MoveUp,
-		MoveDown,
-		Movement,
-		ContinueDialogue,
-		Interact,
-		Reload,
-		BackToMenu,
-		SkipPlayable
+		Attack = 0,
+		ToggleAimMode = 1,
+		Aiming = 2,
+		MoveLeft = 3,
+		MoveRight = 4,
+		MoveUp = 5,
+		MoveDown = 6,
+		Movement = 7,
+		Jump = 13,
+		ContinueDialogue = 8,
+		Interact = 9,
+		Reload = 10,
+		BackToMenu = 11,
+		SkipPlayable = 12
 	}
 
 	public enum MouseButtonType

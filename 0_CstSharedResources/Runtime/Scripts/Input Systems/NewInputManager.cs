@@ -131,7 +131,7 @@ namespace CST.Shared.Resources
 			return _inputActions[action].WasPressedThisFrame();
 		}
 
-		public bool IsPress(KeybindingActions action)
+		public bool IsPressed(KeybindingActions action)
 		{
 			return _inputActions[action].IsPressed();
 		}
