@@ -1,6 +1,6 @@
 {
     "name": "CST.Shared.Resources.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "CST.Shared.Resources.Editor",
     "references": [
         "GUID:8737bb40e5c19604c99b2dd477108b96"
     ],

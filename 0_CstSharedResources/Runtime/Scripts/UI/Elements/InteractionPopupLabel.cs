@@ -1,70 +1,78 @@
 ﻿using TMPro;
 using UnityEngine;
-using static Interactable;
 
-public class InteractionPopupLabel : MonoBehaviour
+namespace CST.Shared.Resources
 {
-	[Header("References"), Space]
-	[SerializeField] private Animator animator;
+	using static Interactable;
 
-	[Space, SerializeField] private TextMeshProUGUI label;
-	[SerializeField] private TextMeshProUGUI keyboardCue;
-	[SerializeField] private Transform mouseCue;
-
-	[Space, SerializeField] private Transform worldCanvas;
-
-	private void Awake()
+	public class InteractionPopupLabel : MonoBehaviour
 	{
-		worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).transform;
-	}
+		[Header("References"), Space]
+		[SerializeField] private TweenableUIMaster tweenable;
 
-	public void RestartAnimation()
-	{
-		animator.SetTrigger("Restart");
-	}
+		[Space, SerializeField] private TextMeshProUGUI label;
+		[SerializeField] private TextMeshProUGUI keyboardCue;
+		[SerializeField] private Transform mouseCue;
 
-	public void SetLabelName(string name)
-	{
-		label.text = name.Trim().ToUpper();
-	}
+		[Space, SerializeField] private Transform worldCanvas;
 
-	public void SetLabelName(string name, int quantity, Color textColor, bool isDuplicated = false)
-	{
-		TextMeshProUGUI chosenLabel = isDuplicated ? Instantiate(label, label.transform.parent) : label;
-
-		chosenLabel.text = quantity > 1 ? $"{name.ToUpper()} x{quantity}" : name.ToUpper();
-		chosenLabel.color = textColor;
-	}
-
-	public void SetupLabel(Transform interactable, InputSource inputSource)
-	{
-		SetLabelName("");
-
-		// Needs fix.
-		keyboardCue.text = "";
-
-		switch (inputSource)
+		private void Awake()
 		{
-			case InputSource.Mouse:
-				keyboardCue.gameObject.SetActive(false);
-				mouseCue.gameObject.SetActive(true);
-				break;
-
-			case InputSource.Keyboard:
-				keyboardCue.gameObject.SetActive(true);
-				mouseCue.gameObject.SetActive(false);
-				break;
-
-			case InputSource.Joystick:
-				break;
-
-			case InputSource.None:
-				mouseCue.parent.gameObject.SetActive(false);
-				break;
+			worldCanvas = GameObject.FindWithTag(GlobalDefines.WORLD_CANVAS_TAG).transform;
 		}
 
-		transform.position = interactable.position;
-		transform.SetParent(worldCanvas, true);
-		transform.SetAsLastSibling();
+		public void RestartAnimation()
+		{
+			tweenable.StartTweening(true);
+		}
+
+		public void SetLabelName(string name)
+		{
+			label.text = name.Trim().ToUpper();
+		}
+
+		public void SetLabelName(string name, int quantity, Color textColor, bool isDuplicated = false)
+		{
+			TextMeshProUGUI chosenLabel = isDuplicated ? Instantiate(label, label.transform.parent) : label;
+
+			chosenLabel.text = quantity > 1 ? $"{name.ToUpper()} x{quantity}" : name.ToUpper();
+			chosenLabel.color = textColor;
+		}
+
+		public void SetupLabel(Transform interactable, InputSource inputSource)
+		{
+			SetLabelName("");
+
+#if ENABLE_INPUT_SYSTEM
+		keyboardCue.text = NewInputManager.Instance.GetDisplayString(KeybindingActions.Interact);
+		
+#elif ENABLE_LEGACY_INPUT_MANAGER
+			keyboardCue.text = LegacyInputManager.Instance.GetKeyForAction(KeybindingActions.Interact).ToString();
+#endif
+
+			switch (inputSource)
+			{
+				case InputSource.Mouse:
+					keyboardCue.gameObject.SetActive(false);
+					mouseCue.gameObject.SetActive(true);
+					break;
+
+				case InputSource.Keyboard:
+					keyboardCue.gameObject.SetActive(true);
+					mouseCue.gameObject.SetActive(false);
+					break;
+
+				case InputSource.Joystick:
+					break;
+
+				case InputSource.None:
+					mouseCue.parent.gameObject.SetActive(false);
+					break;
+			}
+
+			transform.position = interactable.position;
+			transform.SetParent(worldCanvas, true);
+			transform.SetAsLastSibling();
+		}
 	}
 }

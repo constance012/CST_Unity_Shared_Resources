@@ -7,239 +7,242 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Utilities;
 using UnityDebug = UnityEngine.Debug;
 
-/// <summary>
-/// Manages inputs from various devices and sources, using the NEW input system.
-/// </summary>
-[AddComponentMenu("Singletons/New Input Manager")]
-public sealed class NewInputManager : Singleton<NewInputManager>
+namespace CST.Shared.Resources
 {
-	public event EventHandler OnAttackAction;
-	public event EventHandler<InputActionPhase> OnAimModeToggleAction;
-	public event EventHandler OnContinueDialogueAction;
-	public event EventHandler OnReloadAction;
-	public event EventHandler OnBackToMenuAction;
-	public event EventHandler OnSkipPlayableAction;
-
-	// Private fields.
-	private PlayerInputActions _playerInputActions;
-	private Dictionary<KeybindingActions, InputAction> _inputActions;
-
-	protected override void Awake()
+	/// <summary>
+	/// Manages inputs from various devices and sources, using the NEW input system.
+	/// </summary>
+	[AddComponentMenu("Singletons/New Input Manager")]
+	public sealed class NewInputManager : Singleton<NewInputManager>
 	{
-		base.Awake();
-		Initialize();
-	}
+		public event EventHandler OnAttackAction;
+		public event EventHandler<InputActionPhase> OnAimModeToggleAction;
+		public event EventHandler OnContinueDialogueAction;
+		public event EventHandler OnReloadAction;
+		public event EventHandler OnBackToMenuAction;
+		public event EventHandler OnSkipPlayableAction;
 
-	private void OnDestroy()
-	{
-		Dispose();
-	}
+		// Private fields.
+		private PlayerInputActions _playerInputActions;
+		private Dictionary<KeybindingActions, InputAction> _inputActions;
 
-	#region Event methods.
-	private void Attack_performed(InputAction.CallbackContext context)
-	{
-		OnAttackAction?.Invoke(this, EventArgs.Empty);
-	}
-
-	private void AimMode_toggled(InputAction.CallbackContext context)
-	{
-		OnAimModeToggleAction?.Invoke(this, context.phase);
-	}
-
-	private void ContinueDialogue_performed(InputAction.CallbackContext context)
-	{
-		OnContinueDialogueAction?.Invoke(this, EventArgs.Empty);
-	}
-	
-	private void Reload_performed(InputAction.CallbackContext context)
-	{
-		OnReloadAction?.Invoke(this, EventArgs.Empty);
-	}
-	
-	private void BackToMenu_performed(InputAction.CallbackContext context)
-	{
-		OnBackToMenuAction?.Invoke(this, EventArgs.Empty);
-	}
-	
-	private void SkipPlayable_performed(InputAction.CallbackContext context)
-	{
-		OnSkipPlayableAction?.Invoke(this, EventArgs.Empty);
-	}
-	#endregion
-
-	#region Get data and value methods.
-	public TValue ReadValue<TValue>(KeybindingActions action) where TValue : struct
-	{
-		return _inputActions[action].ReadValue<TValue>();
-	}
-
-	public string GetDisplayString(KeybindingActions action, int index = 0)
-	{
-		ReadOnlyArray<InputBinding> bindings = _inputActions[action].bindings;
-		index = Mathf.Clamp(index, 0, bindings.Count - 1);
-
-		return bindings[index].ToDisplayString();
-	}
-	#endregion
-
-	#region Get keys and mouse buttons methods.
-	public Vector2 ScrollDelta => Mouse.current.scroll.ReadValue().normalized;
-	public Vector2 MousePosition => Mouse.current.position.ReadValue();
-
-	public void WarpCursor(Vector2 position, bool isLocal = false)
-	{
-		if (!isLocal)
-			Mouse.current.WarpCursorPosition(position);
-		else
-			Mouse.current.WarpCursorPosition(MousePosition + position);
-	}
-
-	public bool GetMouseButtonDown(MouseButtonType button)
-	{
-		return GetMouseButtonControl(button).wasPressedThisFrame;
-	}
-
-	public bool GetMouseButtonHeld(MouseButtonType button)
-	{
-		return GetMouseButtonControl(button).isPressed;
-	}
-
-	public bool GetMouseButtonUp(MouseButtonType button)
-	{
-		return GetMouseButtonControl(button).wasReleasedThisFrame;
-	}
-	
-	public bool GetKeyDown(Key key)
-	{
-		return Keyboard.current[key].wasPressedThisFrame;
-	}
-
-	public bool GetKeyHeld(Key key)
-	{
-		return Keyboard.current[key].isPressed;
-	}
-
-	public bool GetKeyUp(Key key)
-	{
-		return Keyboard.current[key].wasReleasedThisFrame;
-	}
-
-	public bool WasPressedThisFrame(KeybindingActions action)
-	{
-		return _inputActions[action].WasPressedThisFrame();
-	}
-
-	public bool IsPress(KeybindingActions action)
-	{
-		return _inputActions[action].IsPressed();
-	}
-
-	public bool WasReleasedThisFrame(KeybindingActions action)
-	{
-		return _inputActions[action].WasReleasedThisFrame();
-	}
-	#endregion
-
-	#region Initialization and Clean up.
-	private void Initialize()
-	{
-		_playerInputActions = new PlayerInputActions();
-
-		_playerInputActions.Player.Enable();
-
-		_inputActions ??= new Dictionary<KeybindingActions, InputAction>()
+		protected override void Awake()
 		{
-			[KeybindingActions.Attack] = _playerInputActions.Player.Attack,
-			[KeybindingActions.ToggleAimMode] = _playerInputActions.Player.ToggleAimMode,
-			[KeybindingActions.Aiming] = _playerInputActions.Player.Aiming,
+			base.Awake();
+			Initialize();
+		}
 
-			[KeybindingActions.Movement] = _playerInputActions.Player.Movement,
-			[KeybindingActions.ContinueDialogue] = _playerInputActions.Player.ContinueDialogue,
-			[KeybindingActions.Interact] = _playerInputActions.Player.Interact,
-			[KeybindingActions.Reload] = _playerInputActions.Player.Reload,
-			[KeybindingActions.BackToMenu] = _playerInputActions.Player.BackToMenu,
-			[KeybindingActions.SkipPlayable] = _playerInputActions.Player.SkipPlayable,
-		};
+		private void OnDestroy()
+		{
+			Dispose();
+		}
 
-		Subscribe(KeybindingActions.Attack, ActionEventType.Performed, Attack_performed);
+		#region Event methods.
+		private void Attack_performed(InputAction.CallbackContext context)
+		{
+			OnAttackAction?.Invoke(this, EventArgs.Empty);
+		}
 
-		Subscribe(KeybindingActions.ToggleAimMode, ActionEventType.Started, AimMode_toggled);
-		Subscribe(KeybindingActions.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
+		private void AimMode_toggled(InputAction.CallbackContext context)
+		{
+			OnAimModeToggleAction?.Invoke(this, context.phase);
+		}
 
-		Subscribe(KeybindingActions.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
-		Subscribe(KeybindingActions.Reload, ActionEventType.Performed, Reload_performed);
-		Subscribe(KeybindingActions.BackToMenu, ActionEventType.Performed, BackToMenu_performed);
-		Subscribe(KeybindingActions.SkipPlayable, ActionEventType.Performed, SkipPlayable_performed);
-	}
-
-	private void Dispose()
-	{
-		Unsubscribe(KeybindingActions.Attack, ActionEventType.Performed, Attack_performed);
-
-		Unsubscribe(KeybindingActions.ToggleAimMode, ActionEventType.Started, AimMode_toggled);
-		Unsubscribe(KeybindingActions.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
-
-		Unsubscribe(KeybindingActions.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
-		Unsubscribe(KeybindingActions.Reload, ActionEventType.Performed, Reload_performed);
-		Unsubscribe(KeybindingActions.BackToMenu, ActionEventType.Performed, BackToMenu_performed);
-		Unsubscribe(KeybindingActions.SkipPlayable, ActionEventType.Performed, SkipPlayable_performed);
+		private void ContinueDialogue_performed(InputAction.CallbackContext context)
+		{
+			OnContinueDialogueAction?.Invoke(this, EventArgs.Empty);
+		}
 		
-		_playerInputActions.Dispose();
-	}
-	#endregion
-
-	#region Event subscription management.
-	private void Subscribe(KeybindingActions action, ActionEventType eventType, Action<InputAction.CallbackContext> method)
-	{
-		switch (eventType)
+		private void Reload_performed(InputAction.CallbackContext context)
 		{
-			case ActionEventType.Started:
-				_inputActions[action].started += method;
-				break;
-			case ActionEventType.Performed:
-				_inputActions[action].performed += method;
-				break;
-			case ActionEventType.Canceled:
-				_inputActions[action].canceled += method;
-				break;
+			OnReloadAction?.Invoke(this, EventArgs.Empty);
 		}
-	}
-
-	private void Unsubscribe(KeybindingActions action, ActionEventType eventType, Action<InputAction.CallbackContext> method)
-	{
-		switch (eventType)
+		
+		private void BackToMenu_performed(InputAction.CallbackContext context)
 		{
-			case ActionEventType.Started:
-				_inputActions[action].started -= method;
-				break;
-			case ActionEventType.Performed:
-				_inputActions[action].performed -= method;
-				break;
-			case ActionEventType.Canceled:
-				_inputActions[action].canceled -= method;
-				break;
+			OnBackToMenuAction?.Invoke(this, EventArgs.Empty);
 		}
-	}
-	#endregion
-
-	private ButtonControl GetMouseButtonControl(MouseButtonType button)
-	{
-		return button switch
+		
+		private void SkipPlayable_performed(InputAction.CallbackContext context)
 		{
-			MouseButtonType.Left => Mouse.current.leftButton,
-			MouseButtonType.Right => Mouse.current.rightButton,
-			MouseButtonType.Middle => Mouse.current.middleButton,
-			MouseButtonType.Forward => Mouse.current.forwardButton,
-			MouseButtonType.Backward => Mouse.current.backButton,
-			_ => Mouse.current.leftButton,  // Default will be the left mouse button.
-		};
-	}
+			OnSkipPlayableAction?.Invoke(this, EventArgs.Empty);
+		}
+		#endregion
 
-	enum ActionEventType
-	{
-		Started,
-		Performed,
-		Canceled
+		#region Get data and value methods.
+		public TValue ReadValue<TValue>(KeybindingActions action) where TValue : struct
+		{
+			return _inputActions[action].ReadValue<TValue>();
+		}
+
+		public string GetDisplayString(KeybindingActions action, int index = 0)
+		{
+			ReadOnlyArray<InputBinding> bindings = _inputActions[action].bindings;
+			index = Mathf.Clamp(index, 0, bindings.Count - 1);
+
+			return bindings[index].ToDisplayString();
+		}
+		#endregion
+
+		#region Get keys and mouse buttons methods.
+		public Vector2 ScrollDelta => Mouse.current.scroll.ReadValue().normalized;
+		public Vector2 MousePosition => Mouse.current.position.ReadValue();
+
+		public void WarpCursor(Vector2 position, bool isLocal = false)
+		{
+			if (!isLocal)
+				Mouse.current.WarpCursorPosition(position);
+			else
+				Mouse.current.WarpCursorPosition(MousePosition + position);
+		}
+
+		public bool GetMouseButtonDown(MouseButtonType button)
+		{
+			return GetMouseButtonControl(button).wasPressedThisFrame;
+		}
+
+		public bool GetMouseButtonHeld(MouseButtonType button)
+		{
+			return GetMouseButtonControl(button).isPressed;
+		}
+
+		public bool GetMouseButtonUp(MouseButtonType button)
+		{
+			return GetMouseButtonControl(button).wasReleasedThisFrame;
+		}
+		
+		public bool GetKeyDown(Key key)
+		{
+			return Keyboard.current[key].wasPressedThisFrame;
+		}
+
+		public bool GetKeyHeld(Key key)
+		{
+			return Keyboard.current[key].isPressed;
+		}
+
+		public bool GetKeyUp(Key key)
+		{
+			return Keyboard.current[key].wasReleasedThisFrame;
+		}
+
+		public bool WasPressedThisFrame(KeybindingActions action)
+		{
+			return _inputActions[action].WasPressedThisFrame();
+		}
+
+		public bool IsPressed(KeybindingActions action)
+		{
+			return _inputActions[action].IsPressed();
+		}
+
+		public bool WasReleasedThisFrame(KeybindingActions action)
+		{
+			return _inputActions[action].WasReleasedThisFrame();
+		}
+		#endregion
+
+		#region Initialization and Clean up.
+		private void Initialize()
+		{
+			_playerInputActions = new PlayerInputActions();
+
+			_playerInputActions.Player.Enable();
+
+			_inputActions ??= new Dictionary<KeybindingActions, InputAction>()
+			{
+				[KeybindingActions.Attack] = _playerInputActions.Player.Attack,
+				[KeybindingActions.ToggleAimMode] = _playerInputActions.Player.ToggleAimMode,
+				[KeybindingActions.Aiming] = _playerInputActions.Player.Aiming,
+
+				[KeybindingActions.Movement] = _playerInputActions.Player.Movement,
+				[KeybindingActions.ContinueDialogue] = _playerInputActions.Player.ContinueDialogue,
+				[KeybindingActions.Interact] = _playerInputActions.Player.Interact,
+				[KeybindingActions.Reload] = _playerInputActions.Player.Reload,
+				[KeybindingActions.BackToMenu] = _playerInputActions.Player.BackToMenu,
+				[KeybindingActions.SkipPlayable] = _playerInputActions.Player.SkipPlayable,
+			};
+
+			Subscribe(KeybindingActions.Attack, ActionEventType.Performed, Attack_performed);
+
+			Subscribe(KeybindingActions.ToggleAimMode, ActionEventType.Started, AimMode_toggled);
+			Subscribe(KeybindingActions.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
+
+			Subscribe(KeybindingActions.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
+			Subscribe(KeybindingActions.Reload, ActionEventType.Performed, Reload_performed);
+			Subscribe(KeybindingActions.BackToMenu, ActionEventType.Performed, BackToMenu_performed);
+			Subscribe(KeybindingActions.SkipPlayable, ActionEventType.Performed, SkipPlayable_performed);
+		}
+
+		private void Dispose()
+		{
+			Unsubscribe(KeybindingActions.Attack, ActionEventType.Performed, Attack_performed);
+
+			Unsubscribe(KeybindingActions.ToggleAimMode, ActionEventType.Started, AimMode_toggled);
+			Unsubscribe(KeybindingActions.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
+
+			Unsubscribe(KeybindingActions.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
+			Unsubscribe(KeybindingActions.Reload, ActionEventType.Performed, Reload_performed);
+			Unsubscribe(KeybindingActions.BackToMenu, ActionEventType.Performed, BackToMenu_performed);
+			Unsubscribe(KeybindingActions.SkipPlayable, ActionEventType.Performed, SkipPlayable_performed);
+			
+			_playerInputActions.Dispose();
+		}
+		#endregion
+
+		#region Event subscription management.
+		private void Subscribe(KeybindingActions action, ActionEventType eventType, Action<InputAction.CallbackContext> method)
+		{
+			switch (eventType)
+			{
+				case ActionEventType.Started:
+					_inputActions[action].started += method;
+					break;
+				case ActionEventType.Performed:
+					_inputActions[action].performed += method;
+					break;
+				case ActionEventType.Canceled:
+					_inputActions[action].canceled += method;
+					break;
+			}
+		}
+
+		private void Unsubscribe(KeybindingActions action, ActionEventType eventType, Action<InputAction.CallbackContext> method)
+		{
+			switch (eventType)
+			{
+				case ActionEventType.Started:
+					_inputActions[action].started -= method;
+					break;
+				case ActionEventType.Performed:
+					_inputActions[action].performed -= method;
+					break;
+				case ActionEventType.Canceled:
+					_inputActions[action].canceled -= method;
+					break;
+			}
+		}
+		#endregion
+
+		private ButtonControl GetMouseButtonControl(MouseButtonType button)
+		{
+			return button switch
+			{
+				MouseButtonType.Left => Mouse.current.leftButton,
+				MouseButtonType.Right => Mouse.current.rightButton,
+				MouseButtonType.Middle => Mouse.current.middleButton,
+				MouseButtonType.Forward => Mouse.current.forwardButton,
+				MouseButtonType.Backward => Mouse.current.backButton,
+				_ => Mouse.current.leftButton,  // Default will be the left mouse button.
+			};
+		}
+
+		enum ActionEventType
+		{
+			Started,
+			Performed,
+			Canceled
+		}
 	}
 }
 #endif

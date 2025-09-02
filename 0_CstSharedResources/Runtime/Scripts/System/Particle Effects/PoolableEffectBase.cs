@@ -1,35 +1,38 @@
 using UnityEngine;
 
-public abstract class PoolableEffectBase : MonoBehaviour, IPoolable
+namespace CST.Shared.Resources
 {
-	[Header("Settings"), Space]
-	[SerializeField] protected bool playOnAllocate;
-
-	public void Allocate()
+	public abstract class PoolableEffectBase : MonoBehaviour, IPoolable
 	{
-		gameObject.SetActive(true);
-		AfterAllocate();
-	}
+		[Header("Settings"), Space]
+		[SerializeField] protected bool playOnAllocate;
 
-	public void Deallocate()
-	{
-		BeforeDeallocate();
-		gameObject.SetActive(false);
-	}
+		public void Allocate()
+		{
+			gameObject.SetActive(true);
+			AfterAllocate();
+		}
 
-	public abstract void Play();
-	public abstract void Stop();
-	public abstract void Clear();
+		public void Deallocate()
+		{
+			BeforeDeallocate();
+			gameObject.SetActive(false);
+		}
 
-	protected virtual void BeforeDeallocate()
-	{
-		Stop();
-		Clear();
-	}
+		public abstract void Play();
+		public abstract void Stop();
+		public abstract void Clear();
 
-	protected virtual void AfterAllocate()
-	{
-		if (playOnAllocate)
-			Play();
+		protected virtual void BeforeDeallocate()
+		{
+			Stop();
+			Clear();
+		}
+
+		protected virtual void AfterAllocate()
+		{
+			if (playOnAllocate)
+				Play();
+		}
 	}
 }

@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public sealed class NormalProjectile : ProjectileBase
+namespace CST.Shared.Resources
 {
-	public override void ProcessCollision(Collider2D other)
+	public sealed class NormalProjectile : ProjectileBase
 	{
-		DamageTarget(other, 1f);
-		Deallocate();
+		public override void ProcessCollision(Collider2D other)
+		{
+			DamageTarget(other, 1f);
+			Deallocate();
+		}
 	}
 }

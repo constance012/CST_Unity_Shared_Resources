@@ -1,22 +1,25 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public sealed class ButtonPointerTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+namespace CST.Shared.Resources
 {
-	private RectTransform _rectTransform;
-
-	private void Awake()
+	public sealed class ButtonPointerTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 	{
-		_rectTransform = transform as RectTransform;
-	}
+		private RectTransform _rectTransform;
 
-	public void OnPointerEnter(PointerEventData e)
-	{
-		ButtonPointer.Instance.ShowPointer(_rectTransform);
-	}
+		private void Awake()
+		{
+			_rectTransform = transform as RectTransform;
+		}
 
-	public void OnPointerExit(PointerEventData e)
-	{
-		ButtonPointer.Instance.HidePointer();
+		public void OnPointerEnter(PointerEventData e)
+		{
+			ButtonPointer.Instance.ShowPointer(_rectTransform);
+		}
+
+		public void OnPointerExit(PointerEventData e)
+		{
+			ButtonPointer.Instance.HidePointer();
+		}
 	}
 }

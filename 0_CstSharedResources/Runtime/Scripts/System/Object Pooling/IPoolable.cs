@@ -1,5 +1,8 @@
-public interface IPoolable
+namespace CST.Shared.Resources
 {
-	void Allocate();
-	void Deallocate();
+	public interface IPoolable
+	{
+		void Allocate();
+		void Deallocate();
+	}
 }

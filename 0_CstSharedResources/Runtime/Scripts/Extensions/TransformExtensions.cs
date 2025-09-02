@@ -1,46 +1,49 @@
 ﻿using System;
 using UnityEngine;
 
-public static class TransformExtensions
+namespace CST.Shared.Resources
 {
-	/// <summary>
-	/// Flip the gameobject by alternating the scale between -1 and 1.
-	/// </summary>
-	/// <param name="scale"></param>
-	/// <param name="axis"> A lowercase character represents an axis to flip. </param>
-	/// <returns></returns>
-	public static void FlipByScale(this Transform transform, char axis)
+	public static class TransformExtensions
 	{
-		Vector3 scale = transform.localScale;
-		axis = char.ToLower(axis);
-
-		switch (axis)
+		/// <summary>
+		/// Flip the gameobject by alternating the scale between -1 and 1.
+		/// </summary>
+		/// <param name="scale"></param>
+		/// <param name="axis"> A lowercase character represents an axis to flip. </param>
+		/// <returns></returns>
+		public static void FlipByScale(this Transform transform, char axis)
 		{
-			case 'x':
-				scale.x *= -1;
-				break;
+			Vector3 scale = transform.localScale;
+			axis = char.ToLower(axis);
 
-			case 'y':
-				scale.y *= -1;
-				break;
+			switch (axis)
+			{
+				case 'x':
+					scale.x *= -1;
+					break;
 
-			case 'z':
-				scale.z *= -1;
-				break;
+				case 'y':
+					scale.y *= -1;
+					break;
 
-			default:
-				return;
+				case 'z':
+					scale.z *= -1;
+					break;
+
+				default:
+					return;
+			}
+
+			transform.localScale = scale;
 		}
 
-		transform.localScale = scale;
-	}
-
-	public static void DestroyAllChildren(this Transform transform, Action<UnityEngine.Object> destroyer)
-	{
-		int childCount = transform.childCount;
-		for (int i = 0; i < childCount; i++)
+		public static void DestroyAllChildren(this Transform transform, Action<UnityEngine.Object> destroyer)
 		{
-			destroyer(transform.GetChild(i).gameObject);
+			int childCount = transform.childCount;
+			for (int i = 0; i < childCount; i++)
+			{
+				destroyer(transform.GetChild(i).gameObject);
+			}
 		}
 	}
 }

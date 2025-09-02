@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public interface IDamageable
+namespace CST.Shared.Resources
 {
-	Vector2 Position { get; }
-	void TakeDamage(Stats attackerStats, Vector3 attackerPos, float scaleFactor = 1f);
+	public interface IDamageable
+	{
+		Vector2 Position { get; }
+		void TakeDamage(Stats attackerStats, Vector3 attackerPos, float scaleFactor = 1f);
+	}
 }

@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public static class ColorExtensions
+namespace CST.Shared.Resources
 {
-	public static Color ExtractRGB(this Color target)
+	public static class ColorExtensions
 	{
-		return new Color(target.r, target.g, target.b);
-	}
+		public static Color ExtractRGB(this Color target)
+		{
+			return new Color(target.r, target.g, target.b);
+		}
 
-	public static Color ExtractRGB(this Color target, float alpha)
-	{
-		return new Color(target.r, target.g, target.b, alpha);
+		public static Color ExtractRGB(this Color target, float alpha)
+		{
+			return new Color(target.r, target.g, target.b, alpha);
+		}
 	}
 }

@@ -1,21 +1,22 @@
 using UnityEngine;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
-using CSTGames.Utility;
 
-[CreateAssetMenu(menuName = "Unit Stats/Stats", fileName = "New Blank Stats")]
-public class Stats : ScriptableObject
+namespace CST.Shared.Resources
 {
-	[Header("Stats"), Space]
-	[Tooltip("Dynamic stats are GLOBAL stats shared between objects, which CAN be modified by upgrades.")]
-	public SerializedDictionary<Stat, float> dynamicStats = new SerializedDictionary<Stat, float>();
+	[CreateAssetMenu(menuName = "Unit Stats/Stats", fileName = "New Blank Stats")]
+	public class Stats : ScriptableObject
+	{
+		[Header("Stats"), Space]
+		[Tooltip("Dynamic stats are GLOBAL stats shared between objects, which CAN be modified by upgrades.")]
+		public SerializedDictionary<Stat, float> dynamicStats = new SerializedDictionary<Stat, float>();
 
-	[Tooltip("Static stats are GLOBAL stats shared between objects, which CAN NOT be modified by upgrades.")]
-	public SerializedDictionary<Stat, float> staticStats = new SerializedDictionary<Stat, float>();
+		[Tooltip("Static stats are GLOBAL stats shared between objects, which CAN NOT be modified by upgrades.")]
+		public SerializedDictionary<Stat, float> staticStats = new SerializedDictionary<Stat, float>();
 
-	// Private fields.
-	private readonly HashSet<StatsUpgrade> _appliedUpgrades = new HashSet<StatsUpgrade>();
-	private readonly HashSet<Stat> _toStringIgnoreStats = new HashSet<Stat>()
+		// Private fields.
+		private readonly HashSet<StatsUpgrade> _appliedUpgrades = new HashSet<StatsUpgrade>();
+		private readonly HashSet<Stat> _toStringIgnoreStats = new HashSet<Stat>()
 	{
 		Stat.InvincibilityTime,
 		Stat.ProjectileSpeed,
@@ -23,105 +24,106 @@ public class Stats : ScriptableObject
 		Stat.ProjectileTrackingRigidity,
 	};
 
-	public void AddUpgrade(StatsUpgrade upgrade)
-	{
-		if (!_appliedUpgrades.Contains(upgrade))
-			_appliedUpgrades.Add(upgrade);
-	}
-
-	public void RemoveUpgrade(StatsUpgrade upgrade)
-	{
-		_appliedUpgrades.Remove(upgrade);
-	}
-
-	public void ClearUpgrades()
-	{
-		_appliedUpgrades.Clear();
-	}
-
-	public float GetStaticStat(Stat statName)
-	{
-		if (staticStats.TryGetValue(statName, out float value))
-			return value;
-		else
+		public void AddUpgrade(StatsUpgrade upgrade)
 		{
-			string statString = statName.ToString().AddWhitespaceBeforeCapital();
-			Debug.LogWarning($"No STATIC stat value found for \"{statString}\" on {this.name}");
-			return -1f;
+			if (!_appliedUpgrades.Contains(upgrade))
+				_appliedUpgrades.Add(upgrade);
 		}
-	}
-	
-	public float GetDynamicStat(Stat statName)
-	{
-		if (dynamicStats.TryGetValue(statName, out float baseValue))
-			return GetUpgradedValue(statName, baseValue);
-		else
-		{
-			string statString = statName.ToString().AddWhitespaceBeforeCapital();
-			Debug.LogWarning($"No DYNAMIC stat value found for \"{statString}\" on {this.name}");
-			return -1f;
-		}
-	}
 
-	public void ModifyStat(Stat statName, float delta)
-	{
-		if (dynamicStats.TryGetValue(statName, out float _))
+		public void RemoveUpgrade(StatsUpgrade upgrade)
 		{
-			dynamicStats[statName] += delta;
+			_appliedUpgrades.Remove(upgrade);
 		}
-		else
-		{
-			Debug.LogError($"No DYNAMIC stat value found for {statName} on {this.name}");
-		}
-	}
 
-	private float GetUpgradedValue(Stat stat, float baseValue)
-	{
-		foreach (StatsUpgrade upgrade in _appliedUpgrades)
+		public void ClearUpgrades()
 		{
-			if (!upgrade.affectedStats.TryGetValue(stat, out float upgradeValue))
-				continue;
-			
-			if (upgrade.type == UpgradeValueType.Percentage)
-				baseValue *= 1f + upgradeValue;
+			_appliedUpgrades.Clear();
+		}
+
+		public float GetStaticStat(Stat statName)
+		{
+			if (staticStats.TryGetValue(statName, out float value))
+				return value;
 			else
-				baseValue += upgradeValue;
+			{
+				string statString = statName.ToString().AddWhitespaceBeforeCapital();
+				Debug.LogWarning($"No STATIC stat value found for \"{statString}\" on {this.name}");
+				return -1f;
+			}
 		}
 
-		return baseValue;
+		public float GetDynamicStat(Stat statName)
+		{
+			if (dynamicStats.TryGetValue(statName, out float baseValue))
+				return GetUpgradedValue(statName, baseValue);
+			else
+			{
+				string statString = statName.ToString().AddWhitespaceBeforeCapital();
+				Debug.LogWarning($"No DYNAMIC stat value found for \"{statString}\" on {this.name}");
+				return -1f;
+			}
+		}
+
+		public void ModifyStat(Stat statName, float delta)
+		{
+			if (dynamicStats.TryGetValue(statName, out float _))
+			{
+				dynamicStats[statName] += delta;
+			}
+			else
+			{
+				Debug.LogError($"No DYNAMIC stat value found for {statName} on {this.name}");
+			}
+		}
+
+		private float GetUpgradedValue(Stat stat, float baseValue)
+		{
+			foreach (StatsUpgrade upgrade in _appliedUpgrades)
+			{
+				if (!upgrade.affectedStats.TryGetValue(stat, out float upgradeValue))
+					continue;
+
+				if (upgrade.type == UpgradeValueType.Percentage)
+					baseValue *= 1f + upgradeValue;
+				else
+					baseValue += upgradeValue;
+			}
+
+			return baseValue;
+		}
+
+		public override string ToString()
+		{
+			string result = "";
+			foreach (KeyValuePair<Stat, float> stat in dynamicStats)
+			{
+				if (!_toStringIgnoreStats.Contains(stat.Key))
+					result += $"{stat.Key.ToString().AddWhitespaceBeforeCapital()}: {stat.Value}\n";
+			}
+			result += "\n";
+			foreach (KeyValuePair<Stat, float> stat in staticStats)
+			{
+				if (!_toStringIgnoreStats.Contains(stat.Key))
+					result += $"{stat.Key.ToString().AddWhitespaceBeforeCapital()}: {stat.Value}\n";
+			}
+			return result.TrimEnd('\r', '\n');
+		}
 	}
 
-    public override string ToString()
-    {
-        string result = "";
-		foreach (KeyValuePair<Stat, float> stat in dynamicStats)
-		{
-			if (!_toStringIgnoreStats.Contains(stat.Key))
-				result += $"{stat.Key.ToString().AddWhitespaceBeforeCapital()}: {stat.Value}\n";
-		}
-		result += "\n";
-		foreach (KeyValuePair<Stat, float> stat in staticStats)
-		{
-			if (!_toStringIgnoreStats.Contains(stat.Key))
-				result += $"{stat.Key.ToString().AddWhitespaceBeforeCapital()}: {stat.Value}\n";
-		}
-		return result.TrimEnd('\r', '\n');
-    }
-}
+	public enum Stat
+	{
+		// Dynamic.
+		MaxHealth,
+		Damage,
+		AttackSpeed,
+		MoveSpeed,
+		InvincibilityTime,
 
-public enum Stat
-{
-	// Dynamic.
-	MaxHealth,
-	Damage,
-	AttackSpeed,
-	MoveSpeed,
-	InvincibilityTime,
-
-	// Static.
-	KnockBackStrength,
-	KnockBackRes,
-	ProjectileSpeed,
-	ProjectileTrackingRigidity,
-	ProjectileLifeTime
+		// Static.
+		KnockBackStrength,
+		KnockBackRes,
+		ProjectileSpeed,
+		ProjectileTrackingRigidity,
+		ProjectileLifeTime
+	}
 }

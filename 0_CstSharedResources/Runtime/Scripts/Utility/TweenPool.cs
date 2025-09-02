@@ -5,46 +5,49 @@ using DG.Tweening;
 /// <summary>
 /// An utility class for storing and manages tweens.
 /// </summary>
-public sealed class TweenPool
+namespace CST.Shared.Resources
 {
-	public int Count => _activeTweens.Count;
-	public HashSet<Tween> ActiveTweens => _activeTweens;
-
-	private HashSet<Tween> _activeTweens;
-
-	public TweenPool()
+	public sealed class TweenPool
 	{
-		_activeTweens = new HashSet<Tween>();
-	}
+		public int Count => _activeTweens.Count;
+		public HashSet<Tween> ActiveTweens => _activeTweens;
 
-	public void Add(Tween tween)
-	{
-		_activeTweens.Add(tween);
-	}
+		private HashSet<Tween> _activeTweens;
 
-	public void KillActiveTweens(bool completed)
-	{
-		foreach (Tween tween in _activeTweens)
+		public TweenPool()
 		{
-			if (tween.IsActive())
-				tween.Kill(completed);
+			_activeTweens = new HashSet<Tween>();
 		}
 
-		_activeTweens.Clear();
-	}
-
-	public async Task RewindAndKillActiveTweens(bool completed)
-	{
-		foreach (Tween tween in _activeTweens)
+		public void Add(Tween tween)
 		{
-			if (tween.IsActive())
+			_activeTweens.Add(tween);
+		}
+
+		public void KillActiveTweens(bool completed)
+		{
+			foreach (Tween tween in _activeTweens)
 			{
-				tween.Rewind();
-				await tween.AsyncWaitForRewind();
-				tween.Kill(completed);
+				if (tween.IsActive())
+					tween.Kill(completed);
 			}
+
+			_activeTweens.Clear();
 		}
 
-		_activeTweens.Clear();
+		public async Task RewindAndKillActiveTweens(bool completed)
+		{
+			foreach (Tween tween in _activeTweens)
+			{
+				if (tween.IsActive())
+				{
+					tween.Rewind();
+					await tween.AsyncWaitForRewind();
+					tween.Kill(completed);
+				}
+			}
+
+			_activeTweens.Clear();
+		}
 	}
 }

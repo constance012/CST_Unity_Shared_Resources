@@ -1,8 +1,11 @@
-public interface ILevelable
+namespace CST.Shared.Resources
 {
-	int CurrentLevel { get; }
-	int CurrentExperience { get; }
+	public interface ILevelable
+	{
+		int CurrentLevel { get; }
+		int CurrentExperience { get; }
 
-	void GainExperience(int amount);
-	void LevelUp();
+		void GainExperience(int amount);
+		void LevelUp();
+	}
 }

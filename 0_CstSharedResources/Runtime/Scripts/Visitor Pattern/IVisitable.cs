@@ -1,4 +1,7 @@
-public interface IVisitable
+namespace CST.Shared.Resources
 {
-	void Accept(IVisitor visitor);
+	public interface IVisitable
+	{
+		void Accept(IVisitor visitor);
+	}
 }

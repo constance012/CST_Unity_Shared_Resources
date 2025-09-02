@@ -1,41 +1,43 @@
 using UnityEngine;
-using CSTGames.Utility;
 
-[CreateAssetMenu(menuName = "Items/Base Item", fileName = "New Item")]
-public class Item : IdentifiableSO
+namespace CST.Shared.Resources
 {
-	[Header("Category"), Space]
-	[ReadOnly] public int slotIndex = -1;
-	public ItemCategory category;
-
-	[Header("Quantity and Stack"), Space]
-	public bool stackable;
-	public int maxPerStack = 1;
-	public int quantity = 1;
-
-	[Header("Specials"), Space]
-	public bool canBeUsed;
-	public bool autoUse;
-
-	public virtual bool Use(bool forced = false)
+	[CreateAssetMenu(menuName = "Items/Base Item", fileName = "New Item")]
+	public class Item : IdentifiableSO
 	{
-		Debug.Log($"Using {displayName}...");
-		return canBeUsed;
+		[Header("Category"), Space]
+		[ReadOnly] public int slotIndex = -1;
+		public ItemCategory category;
+
+		[Header("Quantity and Stack"), Space]
+		public bool stackable;
+		public int maxPerStack = 1;
+		public int quantity = 1;
+
+		[Header("Specials"), Space]
+		public bool canBeUsed;
+		public bool autoUse;
+
+		public virtual bool Use(bool forced = false)
+		{
+			Debug.Log($"Using {displayName}...");
+			return canBeUsed;
+		}
+
+		public override string ToString()
+		{
+			return $"Rarity: <b><color=#{ColorUtility.ToHtmlStringRGB(rarity.color)}> {rarity.title} </color></b>\n" +
+					$"Category: <b> {category.ToString().AddWhitespaceBeforeCapital()} </b>\n" +
+					$"{description}";
+		}
 	}
 
-	public override string ToString()
+	public enum ItemCategory
 	{
-		return $"Rarity: <b><color=#{ColorUtility.ToHtmlStringRGB(rarity.color)}> {rarity.title} </color></b>\n" +
-				$"Category: <b> {category.ToString().AddWhitespaceBeforeCapital()} </b>\n" +
-				$"{description}";
+		Null = 0,
+		Consumable = 2,
+		Material = 3,
+		Coin = 4,
+		KeyItem = 1
 	}
-}
-
-public enum ItemCategory
-{
-	Null = 0,
-	Consumable = 2,
-	Material = 3,
-	Coin = 4,
-	KeyItem = 1
 }

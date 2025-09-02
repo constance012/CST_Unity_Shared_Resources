@@ -1,7 +1,10 @@
-public sealed class StringSelector : DirectionalSelector<string>
+namespace CST.Shared.Resources
 {
-	protected override void SetDisplayText()
+	public sealed class StringSelector : DirectionalSelector<string>
 	{
-		selectedText.text = _selected;
+		protected override void SetDisplayText()
+		{
+			selectedText.text = _selected;
+		}
 	}
 }
