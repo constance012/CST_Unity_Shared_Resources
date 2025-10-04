@@ -47,7 +47,7 @@ namespace CST.Shared.Resources
 		keyboardCue.text = NewInputManager.Instance.GetDisplayString(KeybindingActions.Interact);
 		
 #elif ENABLE_LEGACY_INPUT_MANAGER
-			keyboardCue.text = LegacyInputManager.Instance.GetKeyForAction(KeybindingActions.Interact).ToString();
+			keyboardCue.text = LegacyInputManager.Instance.GetKeyForAction(KeybindingAction.Interact).ToString();
 #endif
 
 			switch (inputSource)
