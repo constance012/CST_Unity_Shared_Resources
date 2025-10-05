@@ -7,7 +7,7 @@ namespace CST.Shared.Resources
 	public class StatsUpgrade : GenericUpgradeBase<Stats>
 	{
 		[Header("Detail"), Space]
-		public SerializedDictionary<Stat, float> affectedStats = new SerializedDictionary<Stat, float>();
+		public SerializedDictionary<StatType, float> affectedStats = new SerializedDictionary<StatType, float>();
 
 		public override void DoUpgrade()
 		{

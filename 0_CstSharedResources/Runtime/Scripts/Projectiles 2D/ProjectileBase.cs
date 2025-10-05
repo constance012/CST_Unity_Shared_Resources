@@ -74,9 +74,9 @@ namespace CST.Shared.Resources
 
 			SetTarget(trackTarget);
 
-			flySpeed = _shooterStats.GetStaticStat(Stat.ProjectileSpeed);
-			trackingRigidity = _shooterStats.GetStaticStat(Stat.ProjectileTrackingRigidity);
-			maxLifeTime = _shooterStats.GetStaticStat(Stat.ProjectileLifeTime);
+			flySpeed = _shooterStats.GetStaticStat(StatType.ProjectileSpeed);
+			trackingRigidity = _shooterStats.GetStaticStat(StatType.ProjectileTrackingRigidity);
+			maxLifeTime = _shooterStats.GetStaticStat(StatType.ProjectileLifeTime);
 
 			_aliveTime = maxLifeTime;
 		}

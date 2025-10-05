@@ -39,7 +39,7 @@ namespace CST.Shared.Resources
 
 		private void Start()
 		{
-			SetMaxHealth(stats.GetDynamicStat(Stat.MaxHealth));
+			SetMaxHealth(stats.GetDynamicStat(StatType.MaxHealth));
 		}
 
 		public void Accept(IVisitor visitor)
