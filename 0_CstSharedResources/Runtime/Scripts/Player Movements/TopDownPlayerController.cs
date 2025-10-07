@@ -25,7 +25,7 @@ namespace CST.Shared.Resources
 
 		private void Start()
 		{
-			_maxSpeed = stats.GetDynamicStat(Stat.MoveSpeed);
+			_maxSpeed = stats.GetDynamicStat(StatType.MoveSpeed);
 		}
 
 		private void Update()
@@ -47,7 +47,7 @@ namespace CST.Shared.Resources
 		{
 			if (type == typeof(StatsUpgrade))
 			{
-				_maxSpeed = stats.GetDynamicStat(Stat.MoveSpeed);
+				_maxSpeed = stats.GetDynamicStat(StatType.MoveSpeed);
 			}
 		}
 

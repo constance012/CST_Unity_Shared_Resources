@@ -12,7 +12,7 @@ namespace CST.Shared.Resources
 		[Header("Keyset Reference"), Space]
 		[SerializeField] private Keyset keySet;
 
-		public KeyCode GetKeyForAction(KeybindingActions action)
+		public KeyCode GetKeyForAction(KeybindingAction action)
 		{
 			return keySet[action];
 		}
@@ -22,7 +22,7 @@ namespace CST.Shared.Resources
 		/// </summary>
 		/// <param name="action"></param>
 		/// <returns></returns>
-		public bool GetKey(KeybindingActions action)
+		public bool GetKey(KeybindingAction action)
 		{
 			KeyCode keyCode = GetKeyForAction(action);
 			bool result = Input.GetKey(keyCode);
@@ -35,7 +35,7 @@ namespace CST.Shared.Resources
 		/// </summary>
 		/// <param name="action"></param>
 		/// <returns></returns>
-		public bool GetKeyDown(KeybindingActions action)
+		public bool GetKeyDown(KeybindingAction action)
 		{
 			KeyCode keyCode = GetKeyForAction(action);
 			//Debug.Log(keyCode);
@@ -49,7 +49,7 @@ namespace CST.Shared.Resources
 		/// </summary>
 		/// <param name="action"></param>
 		/// <returns></returns>
-		public bool GetKeyUp(KeybindingActions action)
+		public bool GetKeyUp(KeybindingAction action)
 		{
 			KeyCode keyCode = GetKeyForAction(action);
 			bool result = Input.GetKeyUp(keyCode);
@@ -69,20 +69,20 @@ namespace CST.Shared.Resources
 			switch (axis)
 			{
 				case "horizontal":
-					if (GetKey(KeybindingActions.MoveRight))
+					if (GetKey(KeybindingAction.MoveRight))
 						return 1f;
 
-					else if (GetKey(KeybindingActions.MoveLeft))
+					else if (GetKey(KeybindingAction.MoveLeft))
 						return -1f;
 
 					else
 						return 0f;
 
 				case "vertical":
-					if (GetKey(KeybindingActions.MoveUp))
+					if (GetKey(KeybindingAction.MoveUp))
 						return 1f;
 
-					else if (GetKey(KeybindingActions.MoveDown))
+					else if (GetKey(KeybindingAction.MoveDown))
 						return -1f;
 
 					else

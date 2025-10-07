@@ -89,8 +89,8 @@ namespace CST.Shared.Resources
 			_frameInput.direction = NewInputManager.Instance.ReadValue<Vector2>(KeybindingActions.Movement);
 
 #elif ENABLE_LEGACY_INPUT_MANAGER
-			_frameInput.jumpPressedDown = LegacyInputManager.Instance.GetKeyDown(KeybindingActions.Jump);
-			_frameInput.jumpHeld = LegacyInputManager.Instance.GetKey(KeybindingActions.Jump);
+			_frameInput.jumpPressedDown = LegacyInputManager.Instance.GetKeyDown(KeybindingAction.Jump);
+			_frameInput.jumpHeld = LegacyInputManager.Instance.GetKey(KeybindingAction.Jump);
 
 			_frameInput.direction.x = LegacyInputManager.Instance.GetAxisRaw("Horizontal");
 			_frameInput.direction.y = LegacyInputManager.Instance.GetAxisRaw("Vertical");

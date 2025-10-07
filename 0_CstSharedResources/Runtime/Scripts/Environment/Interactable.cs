@@ -69,7 +69,7 @@ namespace CST.Shared.Resources
 
 			_mat.SetFloat("_Thickness", .4f);
 
-			if (LegacyInputManager.Instance.GetKeyDown(KeybindingActions.Interact))
+			if (LegacyInputManager.Instance.GetKeyDown(KeybindingAction.Interact))
 				Interact();
 
 			// TODO - derived classes implement their own way to visualize interaction.

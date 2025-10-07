@@ -9,19 +9,19 @@ namespace CST.Shared.Resources
 	{
 		[Header("Stats"), Space]
 		[Tooltip("Dynamic stats are GLOBAL stats shared between objects, which CAN be modified by upgrades.")]
-		public SerializedDictionary<Stat, float> dynamicStats = new SerializedDictionary<Stat, float>();
+		public SerializedDictionary<StatType, float> dynamicStats = new SerializedDictionary<StatType, float>();
 
 		[Tooltip("Static stats are GLOBAL stats shared between objects, which CAN NOT be modified by upgrades.")]
-		public SerializedDictionary<Stat, float> staticStats = new SerializedDictionary<Stat, float>();
+		public SerializedDictionary<StatType, float> staticStats = new SerializedDictionary<StatType, float>();
 
 		// Private fields.
 		private readonly HashSet<StatsUpgrade> _appliedUpgrades = new HashSet<StatsUpgrade>();
-		private readonly HashSet<Stat> _toStringIgnoreStats = new HashSet<Stat>()
+		private readonly HashSet<StatType> _toStringIgnoreStats = new HashSet<StatType>()
 	{
-		Stat.InvincibilityTime,
-		Stat.ProjectileSpeed,
-		Stat.ProjectileLifeTime,
-		Stat.ProjectileTrackingRigidity,
+		StatType.InvincibilityTime,
+		StatType.ProjectileSpeed,
+		StatType.ProjectileLifeTime,
+		StatType.ProjectileTrackingRigidity,
 	};
 
 		public void AddUpgrade(StatsUpgrade upgrade)
@@ -40,7 +40,7 @@ namespace CST.Shared.Resources
 			_appliedUpgrades.Clear();
 		}
 
-		public float GetStaticStat(Stat statName)
+		public float GetStaticStat(StatType statName)
 		{
 			if (staticStats.TryGetValue(statName, out float value))
 				return value;
@@ -52,7 +52,7 @@ namespace CST.Shared.Resources
 			}
 		}
 
-		public float GetDynamicStat(Stat statName)
+		public float GetDynamicStat(StatType statName)
 		{
 			if (dynamicStats.TryGetValue(statName, out float baseValue))
 				return GetUpgradedValue(statName, baseValue);
@@ -64,7 +64,7 @@ namespace CST.Shared.Resources
 			}
 		}
 
-		public void ModifyStat(Stat statName, float delta)
+		public void ModifyStat(StatType statName, float delta)
 		{
 			if (dynamicStats.TryGetValue(statName, out float _))
 			{
@@ -76,7 +76,7 @@ namespace CST.Shared.Resources
 			}
 		}
 
-		private float GetUpgradedValue(Stat stat, float baseValue)
+		private float GetUpgradedValue(StatType stat, float baseValue)
 		{
 			foreach (StatsUpgrade upgrade in _appliedUpgrades)
 			{
@@ -95,35 +95,18 @@ namespace CST.Shared.Resources
 		public override string ToString()
 		{
 			string result = "";
-			foreach (KeyValuePair<Stat, float> stat in dynamicStats)
+			foreach (KeyValuePair<StatType, float> stat in dynamicStats)
 			{
 				if (!_toStringIgnoreStats.Contains(stat.Key))
 					result += $"{stat.Key.ToString().AddWhitespaceBeforeCapital()}: {stat.Value}\n";
 			}
 			result += "\n";
-			foreach (KeyValuePair<Stat, float> stat in staticStats)
+			foreach (KeyValuePair<StatType, float> stat in staticStats)
 			{
 				if (!_toStringIgnoreStats.Contains(stat.Key))
 					result += $"{stat.Key.ToString().AddWhitespaceBeforeCapital()}: {stat.Value}\n";
 			}
 			return result.TrimEnd('\r', '\n');
 		}
-	}
-
-	public enum Stat
-	{
-		// Dynamic.
-		MaxHealth,
-		Damage,
-		AttackSpeed,
-		MoveSpeed,
-		InvincibilityTime,
-
-		// Static.
-		KnockBackStrength,
-		KnockBackRes,
-		ProjectileSpeed,
-		ProjectileTrackingRigidity,
-		ProjectileLifeTime
 	}
 }

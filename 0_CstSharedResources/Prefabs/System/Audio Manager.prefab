@@ -50,11 +50,11 @@ MonoBehaviour:
   mixerGroupMaps:
     _serializedList:
     - Key: 0
-      Value: {fileID: 0}
+      Value: {fileID: 6078816342833185485, guid: b2a03e74dce045b49b7cb27623bd2174, type: 2}
     - Key: 1
-      Value: {fileID: 0}
+      Value: {fileID: 6406860560766586965, guid: b2a03e74dce045b49b7cb27623bd2174, type: 2}
     - Key: 2
-      Value: {fileID: 0}
+      Value: {fileID: 9086080056508771514, guid: b2a03e74dce045b49b7cb27623bd2174, type: 2}
   audioEntries: []
 --- !u!1 &1334499020120075185
 GameObject:
