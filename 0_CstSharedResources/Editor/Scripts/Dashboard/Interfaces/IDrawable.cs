@@ -1,22 +1,20 @@
 namespace CST.Shared.Resources.Editor.Dashboard.Interfaces
 {
-	public interface IDashboardTab
+	public interface IDrawable
 	{
-		string TabName { get; }
-
 		/// <summary>
 		/// Called when the tab is first created or activated.
 		/// </summary>
-		void OnEnable();
+		void OnEnable() { }
 
 		/// <summary>
 		/// Called to render the tab's GUI.
 		/// </summary>
-		void OnGUI();
+		void Draw();
 
 		/// <summary>
 		/// Called when the tab is deactivated or destroyed.
 		/// </summary>
-		void OnDisable();
+		void OnDisable() { }
 	}
 }
