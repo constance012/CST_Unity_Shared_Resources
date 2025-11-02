@@ -7,6 +7,7 @@ namespace CST.Shared.Resources.Editor.Dashboard.Tabs.ProjectInfo
 	public class ProjectInfoTab : BaseDashboardTab
 	{
 		public override string TabName => "Project Info";
+		public override int OrderNumber => 1;
 
 		private ProjectInfoDataObject _dataObject;
 		private SerializedObject _dataSerializedObject;

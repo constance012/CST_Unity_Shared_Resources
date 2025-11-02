@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace CST.Shared.Resources.Editor.Dashboard.Tabs
 {
-	public abstract class BaseDashboardTab : IDrawable
+	public abstract class BaseDashboardTab : IDrawable, IDashboardTab
 	{
 		public abstract string TabName { get; }
+		public abstract int OrderNumber { get; }
 
 		protected GUIStyle _subHeaderStyle;
 		protected GUIStyle _boxStyle;

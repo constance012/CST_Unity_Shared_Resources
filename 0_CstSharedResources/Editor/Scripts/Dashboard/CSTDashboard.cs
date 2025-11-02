@@ -1,9 +1,8 @@
+using System;
 using System.Collections.Generic;
 using CST.Shared.Resources.Editor.Dashboard.Interfaces;
 using CST.Shared.Resources.Editor.Dashboard.Tabs;
-using CST.Shared.Resources.Editor.Dashboard.Tabs.BuildHandler;
-using CST.Shared.Resources.Editor.Dashboard.Tabs.ProjectInfo;
-using CST.Shared.Resources.Editor.Dashboard.Tabs.Utilities;
+using CST.Shared.Resources.Editor.Dashboard.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,6 +12,7 @@ namespace CST.Shared.Resources.Editor.Dashboard
 	{
 		public static CSTDashboard Instance { get; private set; }
 		public bool IsInitialized { get; private set; }
+		public int TabCount => _tabs.Count;
 
 		private IDrawable _title;
 		private List<BaseDashboardTab> _tabs;
@@ -96,15 +96,11 @@ namespace CST.Shared.Resources.Editor.Dashboard
 
 		private void InitTabs()
 		{
-			_tabs ??= new List<BaseDashboardTab>()
-			{
-				new ProjectInfoTab(),
-				new BuildHandlerTab(),
-				new UtilitiesTab(),
-			};
+			FetchAllDashboardTabs();
 
 			if (_tabs.Count > 0)
 			{
+				_selectedTabIndex = Mathf.Clamp(_selectedTabIndex, 0, TabCount - 1);
 				_tabs[_selectedTabIndex].OnEnable();
 			}
 		}
@@ -147,6 +143,30 @@ namespace CST.Shared.Resources.Editor.Dashboard
 			}
 
 			return names;
+		}
+
+		private void FetchAllDashboardTabs()
+		{
+			var tabTypes = TypeUtils.FindAllTypesDerivedFromInterface<IDashboardTab>();
+
+			_tabs ??= new List<BaseDashboardTab>();
+
+			foreach (var tabType in tabTypes)
+			{
+				try
+				{
+					var tabInstance = (BaseDashboardTab)Activator.CreateInstance(tabType);
+					_tabs.Add(tabInstance);
+				}
+				catch (Exception e)
+				{
+					Debug.LogError($"Failed to create instance for tab of type {tabType.Name}.\n\n" +
+						$"Reason: {e.Message}.\n" +
+						$"Stack Trace: {e.StackTrace}");
+				}
+			}
+
+			_tabs.Sort((tabA, tabB) => tabA.OrderNumber.CompareTo(tabB.OrderNumber));
 		}
 		#endregion
 	}

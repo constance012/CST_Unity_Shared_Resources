@@ -5,6 +5,7 @@ namespace CST.Shared.Resources.Editor.Dashboard.Tabs.Utilities
 	public class UtilitiesTab : BaseDashboardTab
 	{
 		public override string TabName => "Utilities";
+		public override int OrderNumber => 3;
 
 		public override void OnEnable()
 		{

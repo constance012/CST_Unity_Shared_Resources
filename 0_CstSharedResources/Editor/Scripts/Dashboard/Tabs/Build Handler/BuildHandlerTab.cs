@@ -5,6 +5,7 @@ namespace CST.Shared.Resources.Editor.Dashboard.Tabs.BuildHandler
 	public class BuildHandlerTab : BaseDashboardTab
 	{
 		public override string TabName => "Build Handler";
+		public override int OrderNumber => 2;
 
 		public override void OnEnable()
 		{
