@@ -3,7 +3,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public enum DamageTextStyle { Small, Normal, Critical }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace CST.Shared.Resources.Editor.Dashboard.Utilities
+namespace CSTGames.SharedResources.Editor.Dashboard.Utilities
 {
 	public static class TypeUtils
 	{

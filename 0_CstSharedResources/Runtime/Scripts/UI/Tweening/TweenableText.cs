@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public sealed class TweenableText : MonoBehaviour
 	{

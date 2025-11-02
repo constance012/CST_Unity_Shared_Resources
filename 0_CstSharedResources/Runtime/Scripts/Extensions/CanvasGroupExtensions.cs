@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using DG.Tweening;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public static class CanvasGroupExtensions
 	{

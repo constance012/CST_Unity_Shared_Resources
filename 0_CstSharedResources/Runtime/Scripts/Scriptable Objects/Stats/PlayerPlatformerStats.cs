@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[CreateAssetMenu(menuName = "Unit Stats/Player Platformer Stats", fileName = "New Platformer Stats")]
 	public class PlayerPlatformerStats : ScriptableObject

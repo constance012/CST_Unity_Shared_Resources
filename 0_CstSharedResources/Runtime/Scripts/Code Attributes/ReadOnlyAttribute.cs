@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
 	public class ReadOnlyAttribute : PropertyAttribute

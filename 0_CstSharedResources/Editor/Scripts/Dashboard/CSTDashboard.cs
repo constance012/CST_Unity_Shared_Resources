@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using CST.Shared.Resources.Editor.Dashboard.Interfaces;
-using CST.Shared.Resources.Editor.Dashboard.Tabs;
-using CST.Shared.Resources.Editor.Dashboard.Utilities;
+using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
+using CSTGames.SharedResources.Editor.Dashboard.Tabs;
+using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace CST.Shared.Resources.Editor.Dashboard
+namespace CSTGames.SharedResources.Editor.Dashboard
 {
 	public class CSTDashboard : EditorWindow
 	{

@@ -4,7 +4,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[Serializable]
 	public class UITweener

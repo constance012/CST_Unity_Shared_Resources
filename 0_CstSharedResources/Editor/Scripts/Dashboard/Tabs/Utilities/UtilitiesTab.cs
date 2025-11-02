@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace CST.Shared.Resources.Editor.Dashboard.Tabs.Utilities
+namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.Utilities
 {
 	public class UtilitiesTab : BaseDashboardTab
 	{

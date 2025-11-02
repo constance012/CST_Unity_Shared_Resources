@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public enum CursorTextureType { Default, Crosshair }
 

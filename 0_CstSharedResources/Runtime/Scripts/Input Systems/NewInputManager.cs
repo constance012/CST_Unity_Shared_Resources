@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Utilities;
 using UnityDebug = UnityEngine.Debug;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	/// <summary>
 	/// Manages inputs from various devices and sources, using the NEW input system.

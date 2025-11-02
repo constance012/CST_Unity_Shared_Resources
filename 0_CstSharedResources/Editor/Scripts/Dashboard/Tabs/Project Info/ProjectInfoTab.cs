@@ -1,8 +1,8 @@
-using CST.Shared.Resources.Editor.Dashboard.Utilities;
+using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace CST.Shared.Resources.Editor.Dashboard.Tabs.ProjectInfo
+namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 {
 	public class ProjectInfoTab : BaseDashboardTab
 	{

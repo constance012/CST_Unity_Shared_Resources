@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace CST.Shared.Resources.Editor
+namespace CSTGames.SharedResources.Editor
 {	
 	public static class CSTGamesHelper
 	{

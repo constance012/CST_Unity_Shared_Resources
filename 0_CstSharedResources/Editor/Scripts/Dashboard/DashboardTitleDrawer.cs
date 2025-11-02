@@ -1,9 +1,9 @@
-using CST.Shared.Resources.Editor.Dashboard.Interfaces;
-using CST.Shared.Resources.Editor.Dashboard.Utilities;
+using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
+using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace CST.Shared.Resources.Editor.Dashboard
+namespace CSTGames.SharedResources.Editor.Dashboard
 {
 	public class DashboardTitleDrawer : IDrawable
 	{

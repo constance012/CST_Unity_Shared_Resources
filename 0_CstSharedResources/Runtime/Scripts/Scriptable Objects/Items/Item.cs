@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[CreateAssetMenu(menuName = "Items/Base Item", fileName = "New Item")]
 	public class Item : IdentifiableSO

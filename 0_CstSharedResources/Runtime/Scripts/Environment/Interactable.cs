@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Base class for all interactable objects.
 /// </summary>
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public abstract class Interactable : MonoBehaviour
 	{

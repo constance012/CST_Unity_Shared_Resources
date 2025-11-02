@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[RequireComponent(typeof(Rigidbody2D))]
 	public class PlatformerPlayerController : MonoBehaviour, IPlayerController

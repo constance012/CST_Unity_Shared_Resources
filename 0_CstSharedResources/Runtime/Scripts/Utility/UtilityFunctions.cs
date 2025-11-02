@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	/// <summary>
 	/// Provides some useful methods for manipulating Strings.

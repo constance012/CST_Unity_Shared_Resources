@@ -1,7 +1,7 @@
 #if ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	/// <summary>
 	/// Manages all the keyboard input for the game, using Unity's legacy input system.

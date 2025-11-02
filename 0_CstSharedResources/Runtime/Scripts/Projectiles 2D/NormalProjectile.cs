@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public sealed class NormalProjectile : ProjectileBase
 	{

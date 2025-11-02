@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public abstract class MultiplePrefabsPool<TSingleton, TType, TPoolable> : Singleton<TSingleton>
 																where TType : Enum

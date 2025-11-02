@@ -1,4 +1,4 @@
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public interface ILevelable
 	{

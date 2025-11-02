@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[AddComponentMenu("Transform Constraints/Transform Rotation Constraint", 1)]
 	public sealed class TransformRotationConstraint : TransformConstraintBase

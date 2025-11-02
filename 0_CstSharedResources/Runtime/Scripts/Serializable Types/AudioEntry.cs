@@ -6,7 +6,7 @@ using UnityEngine.Audio;
 /// A custom class contains information about Audio Clips.
 /// Used by the Audio Manager.
 /// </summary>
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[Serializable]
 	public class AudioEntry

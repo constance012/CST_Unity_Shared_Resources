@@ -1,8 +1,8 @@
-using CST.Shared.Resources.Editor.Dashboard.Interfaces;
-using CST.Shared.Resources.Editor.Dashboard.Utilities;
+using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
+using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEngine;
 
-namespace CST.Shared.Resources.Editor.Dashboard.Tabs
+namespace CSTGames.SharedResources.Editor.Dashboard.Tabs
 {
 	public abstract class BaseDashboardTab : IDrawable, IDashboardTab
 	{

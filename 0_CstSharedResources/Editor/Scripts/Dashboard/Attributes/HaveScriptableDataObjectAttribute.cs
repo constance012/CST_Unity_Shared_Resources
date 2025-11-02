@@ -1,6 +1,6 @@
 using System;
 
-namespace CST.Shared.Resources.Editor.Dashboard.Attributes
+namespace CSTGames.SharedResources.Editor.Dashboard.Attributes
 {
 	public class HaveScriptableDataObjectAttribute : Attribute
 	{

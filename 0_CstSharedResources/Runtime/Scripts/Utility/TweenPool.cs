@@ -5,7 +5,7 @@ using DG.Tweening;
 /// <summary>
 /// An utility class for storing and manages tweens.
 /// </summary>
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public sealed class TweenPool
 	{

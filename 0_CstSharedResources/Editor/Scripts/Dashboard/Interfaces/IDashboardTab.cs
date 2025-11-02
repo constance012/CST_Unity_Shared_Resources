@@ -1,4 +1,4 @@
-namespace CST.Shared.Resources.Editor.Dashboard.Interfaces
+namespace CSTGames.SharedResources.Editor.Dashboard.Interfaces
 {
 	public interface IDashboardTab
 	{

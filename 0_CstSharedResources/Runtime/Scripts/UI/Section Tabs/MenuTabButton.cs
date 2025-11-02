@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using DG.Tweening;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[RequireComponent(typeof(Graphic))]
 	public class MenuTabButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler

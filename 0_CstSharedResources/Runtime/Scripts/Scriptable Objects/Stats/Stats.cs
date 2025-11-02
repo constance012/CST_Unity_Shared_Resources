@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[CreateAssetMenu(menuName = "Unit Stats/Stats", fileName = "New Blank Stats")]
 	public class Stats : ScriptableObject

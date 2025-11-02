@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	/// <summary>
 	/// Makes a permanent singleton reference for the entire game session, which persists between different scenes.

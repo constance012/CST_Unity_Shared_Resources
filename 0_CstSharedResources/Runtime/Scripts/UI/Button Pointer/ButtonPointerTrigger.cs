@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public sealed class ButtonPointerTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 	{

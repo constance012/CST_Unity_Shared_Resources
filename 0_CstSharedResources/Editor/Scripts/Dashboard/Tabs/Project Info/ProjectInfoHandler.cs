@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEditor.Build;
 
-namespace CST.Shared.Resources.Editor.Dashboard.Tabs.ProjectInfo
+namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 {
 	public class ProjectInfoHandler
 	{

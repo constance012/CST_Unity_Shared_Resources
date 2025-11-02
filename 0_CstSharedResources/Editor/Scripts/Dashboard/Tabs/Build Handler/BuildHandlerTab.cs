@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace CST.Shared.Resources.Editor.Dashboard.Tabs.BuildHandler
+namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 {
 	public class BuildHandlerTab : BaseDashboardTab
 	{

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace CST.Shared.Resources.Editor.Dashboard.Utilities
+namespace CSTGames.SharedResources.Editor.Dashboard.Utilities
 {
 	public enum GUIStyleType
 	{

@@ -1,7 +1,7 @@
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[CreateAssetMenu(menuName = "Upgrades/Stats Upgrade", fileName = "New Stats Upgrade")]
 	public class StatsUpgrade : GenericUpgradeBase<Stats>

@@ -3,7 +3,7 @@
 /// <summary>
 /// A static wrapper class for easily manipulating PlayerPref keys.
 /// </summary>
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public static class UserSettings
 	{
