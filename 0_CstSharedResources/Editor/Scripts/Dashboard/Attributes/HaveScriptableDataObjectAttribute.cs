@@ -2,7 +2,8 @@ using System;
 
 namespace CSTGames.SharedResources.Editor.Dashboard.Attributes
 {
-	public class HaveScriptableDataObjectAttribute : Attribute
+	[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
+	public sealed class HaveScriptableDataObjectAttribute : Attribute
 	{
 		public Type ScriptableDataType { get; }
 		public string AssetName { get; }

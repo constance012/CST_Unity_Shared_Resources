@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using CSTGames.SharedResources.Editor.Dashboard.Attributes;
 using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -9,51 +13,133 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 		public override string TabName => "Project Info";
 		public override int OrderNumber => 1;
 
+		private const string UNCATEGORIZED_GROUP_NAME = "Uncategorized";
+
 		private ProjectInfoDataObject _dataObject;
 		private SerializedObject _dataSerializedObject;
-		private UnityEditor.Editor _dataObjectEditor;
+		private Dictionary<string, List<SerializedProperty>> _categorizedProperties;
+		private List<SerializedProperty> _uncategorizedProperties;
 
 		private ProjectInfoHandler _handler;
+		private Vector2 _scrollPosition;
 
 		public override void OnEnable()
 		{
 			base.OnEnable();
 			LoadDataObject();
+			InitializePropertyGroups();
 		}
 
 		public override void Draw()
 		{
-			EditorGUILayout.BeginVertical(GUIStyleGetter.Get(GUIStyleType.BoxStyle));
-			EditorGUILayout.Space(20f);
-
-			if (_dataObjectEditor != null)
+			if (GUILayout.Button("APPLY CHANGES", GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle), GUILayout.MinHeight(50f)))
 			{
-				DrawDataObjectSection();
+				EditorUtility.SetDirty(_dataObject);
+				AssetDatabase.SaveAssetIfDirty(_dataObject);
+
+				_handler.ApplyProjectInfo(_dataObject);
+			}
+
+			EditorGUILayout.Space(10f);
+
+			if (_categorizedProperties != null)
+			{
+				_scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+				{
+					DrawDataObjectSection();
+				}
+				EditorGUILayout.EndScrollView();
 			}
 			else
 			{
-				EditorGUILayout.HelpBox("Project Info tab content goes here.", MessageType.Error);
+				EditorGUILayout.HelpBox($"Unable to parse properties from the associated {typeof(ProjectInfoDataObject).Name} scriptable object.\n" +
+					"Check the Console for more details.", MessageType.Error);
 			}
-
-			EditorGUILayout.EndVertical();
 		}
-		
+
 		private void DrawDataObjectSection()
 		{
-			EditorGUI.BeginChangeCheck();
+			_dataSerializedObject.Update();
 
-			_dataObjectEditor.OnInspectorGUI();
-			EditorGUILayout.Space(20f);
-
-			if (GUILayout.Button("APPLY CHANGES", GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle), GUILayout.MinHeight(50f)))
+			foreach (var propertyGroup in _categorizedProperties)
 			{
-				if (EditorGUI.EndChangeCheck())
+				EditorGUILayout.LabelField(propertyGroup.Key, _subHeaderStyle);
+				EditorGUILayout.BeginVertical(_boxStyle);
 				{
-					SaveDataObject();
+					foreach (var property in propertyGroup.Value)
+					{
+						EditorGUILayout.PropertyField(property, new GUIContent(property.displayName));
+					}
 				}
-				
-				_handler.ApplyProjectInfo(_dataObject);
+				EditorGUILayout.EndVertical();
+				EditorGUILayout.Space(10f);
 			}
+
+			if (_uncategorizedProperties.Count > 0)
+			{
+				EditorGUILayout.LabelField(UNCATEGORIZED_GROUP_NAME, _subHeaderStyle);
+				EditorGUILayout.BeginVertical(_boxStyle);
+				{
+					foreach (var property in _uncategorizedProperties)
+					{
+						EditorGUILayout.PropertyField(property, new GUIContent(property.displayName));
+					}
+				}
+				EditorGUILayout.EndVertical();
+				EditorGUILayout.Space(10f);
+			}
+
+			_dataSerializedObject.ApplyModifiedProperties();
+		}
+
+		private void InitializePropertyGroups()
+		{
+			var groupSortOrders = new Dictionary<string, int>();
+
+			var fields = _dataSerializedObject.targetObject.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
+			string previousHeader = string.Empty;
+
+			foreach (var field in fields)
+			{
+				var property = _dataSerializedObject.FindProperty(field.Name);
+				var headerGroupAttribute = field.GetCustomAttribute<HeaderGroupAttribute>();
+
+				string currentHeader = headerGroupAttribute?.HeaderName;
+				int? orderNumber = headerGroupAttribute?.Order;
+
+				if (string.IsNullOrEmpty(previousHeader) && string.IsNullOrEmpty(currentHeader))
+				{
+					_uncategorizedProperties.Add(property);
+					continue;
+				}
+
+				if (!string.IsNullOrEmpty(currentHeader) && currentHeader != previousHeader)
+				{
+					previousHeader = currentHeader;
+				}
+
+				TryAddToPropertyGroup(previousHeader, property);
+
+				if (orderNumber.HasValue)
+				{
+					groupSortOrders[previousHeader] = orderNumber.Value;
+				}
+			}
+
+			_categorizedProperties = _categorizedProperties
+				.OrderBy(group => groupSortOrders[group.Key])
+				.ToDictionary(group => group.Key, group => group.Value);
+		}
+		
+		private void TryAddToPropertyGroup(string headerName, SerializedProperty property)
+		{
+			if (!_categorizedProperties.TryGetValue(headerName, out var propertyGroup))
+			{
+				propertyGroup = new List<SerializedProperty>();
+				_categorizedProperties[headerName] = propertyGroup;
+			}
+
+			propertyGroup.Add(property);
 		}
 
 		private void LoadDataObject()
@@ -61,19 +147,11 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 			_dataObject = ProjectInfoDataObject.LoadOrCreateInstance();
 
 			_dataSerializedObject = new SerializedObject(_dataObject);
-			_dataObjectEditor = UnityEditor.Editor.CreateEditor(_dataObject);
+
+			_categorizedProperties = new Dictionary<string, List<SerializedProperty>>();
+			_uncategorizedProperties = new List<SerializedProperty>();
 
 			_handler = new ProjectInfoHandler();
-		}
-
-		private void SaveDataObject()
-		{
-			_dataSerializedObject.ApplyModifiedProperties();
-
-			EditorUtility.SetDirty(_dataObject);
-			AssetDatabase.SaveAssetIfDirty(_dataObject);
-			
-			_dataSerializedObject.Update();
 		}
 	}
 }

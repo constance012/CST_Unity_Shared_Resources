@@ -1,4 +1,5 @@
 using System.IO;
+using CSTGames.SharedResources.Editor.Dashboard.Attributes;
 using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -8,15 +9,15 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 	[CreateAssetMenu(fileName = "ProjectInfoDataObject", menuName = "CST Dashboard/Data Objects/Project Info")]
 	public class ProjectInfoDataObject : ScriptableObject
 	{
-		[Header("General Info"), Space]
+		[HeaderGroup("Build Target", 1)]
 		public BuildTarget TargetPlatform = BuildTarget.StandaloneWindows64;
 
-		[Space]
+		[HeaderGroup("General Info", 2)]
 		public string ApplicationIdentifier;
 		public string ProductName;
 		public string CompanyName;
 
-		[Space]
+		[HeaderGroup("Versions", 3)]
 		public string Version;
 		public int BuildNumber;
 
