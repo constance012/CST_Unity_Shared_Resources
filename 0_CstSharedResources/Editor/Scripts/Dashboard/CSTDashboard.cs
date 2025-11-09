@@ -18,7 +18,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard
 		private List<BaseDashboardTab> _tabs;
 		private int _selectedTabIndex;
 
-		[MenuItem("CST Games/Dashboard %#d")]
+		[MenuItem("CST Games/Dashboard %#d", priority = 10)]
 		public static void ShowWindow()
 		{
 			var dashboard = GetWindow<CSTDashboard>("CST Dashboard");
