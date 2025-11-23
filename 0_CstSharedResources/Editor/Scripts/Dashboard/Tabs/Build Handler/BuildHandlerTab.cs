@@ -1,4 +1,7 @@
+using CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo;
+using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEditor;
+using UnityEngine;
 
 namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 {
@@ -7,14 +10,73 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		public override string TabName => "Build Handler";
 		public override int OrderNumber => 2;
 
+		private ProjectInfoDataObject _projectInfoData;
+		private BuildHandler _handler;
+
 		public override void OnEnable()
 		{
 			base.OnEnable();
+			Initialize();
 		}
 
+		#region Drawing Methods.
 		public override void Draw()
 		{
-			EditorGUILayout.HelpBox("Build Handler tab content goes here.", MessageType.Info);
+			if (_handler.NeedToSwitchBuildTarget)
+			{
+				DrawSwitchBuildTargetWarning();
+			}
+			else
+			{
+				DrawBuildInfoSection();
+			}
 		}
+
+		private void DrawSwitchBuildTargetWarning()
+		{
+			if (_handler.SelectedBuildTargetGroup == BuildTargetGroup.Unknown)
+			{
+				EditorGUILayout.HelpBox
+				(
+					$"The current active build platform is \"{_handler.ActiveBuildTarget}\".\n" +
+					$"The Project Info settings are configured for the \"{_projectInfoData.TargetPlatform}\" platform, which belongs to an UNKNOWN build target group.\n" +
+					"Switching build target is NOT possible.",
+					MessageType.Error
+				);
+
+				return;
+			}
+
+			EditorGUILayout.HelpBox
+			(
+				$"The current active build platform is \"{_handler.ActiveBuildTarget}\".\n" +
+				$"The Project Info settings are configured for the \"{_projectInfoData.TargetPlatform}\" platform of the \"{_handler.SelectedBuildTargetGroup}\" group.\n" +
+				"Switching build target is MANDATORY to match the currently selected platform.",
+				MessageType.Warning
+			);
+
+			EditorGUILayout.Space(10f);
+
+			if (GUILayout.Button($"SWITCH TO THE SELECTED PLATFORM".ToUpper(),
+				GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle),
+				GUILayout.MinHeight(50f)))
+			{
+				_handler.SwitchActiveBuildTarget();
+			}
+		}
+
+		private void DrawBuildInfoSection()
+		{
+			EditorGUILayout.HelpBox("Build Info section content goes here.", MessageType.Info);
+		}
+		#endregion
+
+		#region Initialization Methods
+		private void Initialize()
+		{
+			_projectInfoData = ProjectInfoDataObject.LoadOrCreateInstance();
+			_handler = new BuildHandler(_projectInfoData);
+		}
+		#endregion
 	}
 }
