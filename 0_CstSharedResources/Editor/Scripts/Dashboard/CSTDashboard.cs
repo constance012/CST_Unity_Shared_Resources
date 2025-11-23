@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
 using CSTGames.SharedResources.Editor.Dashboard.Tabs;
 using CSTGames.SharedResources.Editor.Dashboard.Utilities;
@@ -147,24 +148,12 @@ namespace CSTGames.SharedResources.Editor.Dashboard
 
 		private void FetchAllDashboardTabs()
 		{
-			var tabTypes = TypeUtils.FindAllTypesDerivedFromInterface<IDashboardTab>();
+			var tabTypes = TypeUtils.FindAllInstancesOfInterface<IDashboardTab>()
+				.Select(tab => tab as BaseDashboardTab);
 
 			_tabs ??= new List<BaseDashboardTab>();
 
-			foreach (var tabType in tabTypes)
-			{
-				try
-				{
-					var tabInstance = (BaseDashboardTab)Activator.CreateInstance(tabType);
-					_tabs.Add(tabInstance);
-				}
-				catch (Exception e)
-				{
-					Debug.LogError($"Failed to create instance for tab of type {tabType.Name}.\n\n" +
-						$"Reason: {e.Message}.\n" +
-						$"Stack Trace: {e.StackTrace}");
-				}
-			}
+			_tabs.AddRange(tabTypes);
 
 			_tabs.Sort((tabA, tabB) => tabA.OrderNumber.CompareTo(tabB.OrderNumber));
 		}

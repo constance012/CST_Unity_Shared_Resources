@@ -29,5 +29,28 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Utilities
 
 			return derivedTypes;
 		}
+
+		public static IEnumerable<TInterface> FindAllInstancesOfInterface<TInterface>()
+		{
+			var derivedTypes = FindAllTypesDerivedFromInterface<TInterface>();
+			var instances = new HashSet<TInterface>();
+
+			foreach (var type in derivedTypes)
+			{
+				try
+				{
+					var tabInstance = (TInterface)Activator.CreateInstance(type);
+					instances.Add(tabInstance);
+				}
+				catch (Exception e)
+				{
+					Debug.LogError($"[Type-Utils] FAILED to create instance of type \"{type.Name}\" implementing the \"{typeof(TInterface).Name}\" interface.\n\n" +
+						$"Reason: {e.Message}.\n" +
+						$"Stack Trace: {e.StackTrace}");
+				}
+			}
+
+			return instances;
+		}
 	}
 }
