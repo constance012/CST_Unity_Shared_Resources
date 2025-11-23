@@ -1,3 +1,5 @@
+using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
+using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEditor;
 using UnityEditor.Build;
 
@@ -18,6 +20,8 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 			ApplyBuildNumber(activeBuildTargetGroup, dataObject.BuildNumber);
 
 			AssetDatabase.SaveAssets();
+
+			ExecuteCallbacks();
 		}
 
 		private void ApplyBuildNumber(BuildTargetGroup buildTarget, int buildNumber)
@@ -31,6 +35,16 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 				case BuildTargetGroup.iOS:
 					PlayerSettings.iOS.buildNumber = buildNumber.ToString();
 					break;
+			}
+		}
+
+		private void ExecuteCallbacks()
+		{
+			var onApplyProjectCallbacks = TypeUtils.FindAllInstancesOfInterface<IOnApplyProject>();
+
+			foreach (var callback in onApplyProjectCallbacks)
+			{
+				callback?.OnApplyProject();
 			}
 		}
 	}

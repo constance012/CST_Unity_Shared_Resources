@@ -30,6 +30,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 			InitializePropertyGroups();
 		}
 
+		#region Drawing Methods.
 		public override void Draw()
 		{
 			if (GUILayout.Button("APPLY CHANGES", GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle), GUILayout.MinHeight(50f)))
@@ -91,7 +92,9 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 
 			_dataSerializedObject.ApplyModifiedProperties();
 		}
+		#endregion
 
+		#region Initialization Methods
 		private void InitializePropertyGroups()
 		{
 			var groupSortOrders = new Dictionary<string, int>();
@@ -153,5 +156,6 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo
 
 			_handler = new ProjectInfoHandler();
 		}
+		#endregion
 	}
 }
