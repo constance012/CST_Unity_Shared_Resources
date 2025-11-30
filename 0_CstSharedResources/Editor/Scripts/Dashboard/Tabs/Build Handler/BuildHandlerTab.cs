@@ -1,3 +1,4 @@
+using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
 using CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo;
 using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEditor;
@@ -11,7 +12,8 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		public override int OrderNumber => 2;
 
 		private ProjectInfoDataObject _projectInfoData;
-		private BuildHandler _handler;
+		private BuildHandler _buildHandler;
+		private IDrawable _buildInfoDrawer;
 
 		public override void OnEnable()
 		{
@@ -22,7 +24,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		#region Drawing Methods.
 		public override void Draw()
 		{
-			if (_handler.NeedToSwitchBuildTarget)
+			if (_buildHandler.NeedToSwitchBuildTarget)
 			{
 				DrawSwitchBuildTargetWarning();
 			}
@@ -34,11 +36,11 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 
 		private void DrawSwitchBuildTargetWarning()
 		{
-			if (_handler.SelectedBuildTargetGroup == BuildTargetGroup.Unknown)
+			if (_buildHandler.SelectedBuildTargetGroup == BuildTargetGroup.Unknown)
 			{
 				EditorGUILayout.HelpBox
 				(
-					$"The current active build platform is \"{_handler.ActiveBuildTarget}\".\n" +
+					$"The current active build platform is \"{_buildHandler.ActiveBuildTarget}\".\n" +
 					$"The Project Info settings are configured for the \"{_projectInfoData.TargetPlatform}\" platform, which belongs to an UNKNOWN build target group.\n" +
 					"Switching build target is NOT possible.",
 					MessageType.Error
@@ -49,8 +51,8 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 
 			EditorGUILayout.HelpBox
 			(
-				$"The current active build platform is \"{_handler.ActiveBuildTarget}\".\n" +
-				$"The Project Info settings are configured for the \"{_projectInfoData.TargetPlatform}\" platform of the \"{_handler.SelectedBuildTargetGroup}\" group.\n" +
+				$"The current active build platform is \"{_buildHandler.ActiveBuildTarget}\".\n" +
+				$"The Project Info settings are configured for the \"{_projectInfoData.TargetPlatform}\" platform of the \"{_buildHandler.SelectedBuildTargetGroup}\" group.\n" +
 				"Switching build target is MANDATORY to match the currently selected platform.",
 				MessageType.Warning
 			);
@@ -61,13 +63,13 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 				GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle),
 				GUILayout.MinHeight(50f)))
 			{
-				_handler.SwitchActiveBuildTarget();
+				_buildHandler.SwitchActiveBuildTarget();
 			}
 		}
 
 		private void DrawBuildInfoSection()
 		{
-			EditorGUILayout.HelpBox("Build Info section content goes here.", MessageType.Info);
+			_buildInfoDrawer.Draw();
 		}
 		#endregion
 
@@ -75,7 +77,10 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		private void Initialize()
 		{
 			_projectInfoData = ProjectInfoDataObject.LoadOrCreateInstance();
-			_handler = new BuildHandler(_projectInfoData);
+			_buildHandler = new BuildHandler(_projectInfoData);
+
+			_buildInfoDrawer = new BuildInfoDrawer(_projectInfoData);
+			_buildInfoDrawer.OnEnable();
 		}
 		#endregion
 	}
