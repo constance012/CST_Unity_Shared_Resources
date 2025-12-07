@@ -14,11 +14,13 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		private ProjectInfoDataObject _projectInfoData;
 		private BuildHandler _buildHandler;
 		private IDrawable _buildInfoDrawer;
+		private IBuildPlatformDrawable _platformDrawer;
 
 		public override void OnEnable()
 		{
 			base.OnEnable();
 			Initialize();
+			ConstructBuildPlatformDrawer();
 		}
 
 		#region Drawing Methods.
@@ -31,6 +33,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			else
 			{
 				DrawBuildInfoSection();
+				DrawPlatformSpecificSection();
 			}
 		}
 
@@ -70,6 +73,12 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		private void DrawBuildInfoSection()
 		{
 			_buildInfoDrawer.Draw();
+			EditorGUILayout.Space(10f);
+		}
+
+		private void DrawPlatformSpecificSection()
+		{
+			_platformDrawer.Draw();
 		}
 		#endregion
 
@@ -81,6 +90,31 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 
 			_buildInfoDrawer = new BuildInfoDrawer(_projectInfoData);
 			_buildInfoDrawer.OnEnable();
+		}
+
+		private void ConstructBuildPlatformDrawer()
+		{
+			switch (_projectInfoData.TargetPlatform)
+			{
+				case BuildTarget.StandaloneWindows:
+				case BuildTarget.StandaloneWindows64:
+					_platformDrawer = new WindowsPlatformDrawer(_projectInfoData);
+					break;
+				
+				case BuildTarget.StandaloneLinux64:
+				case BuildTarget.EmbeddedLinux:
+				case BuildTarget.LinuxHeadlessSimulation:
+					_platformDrawer = new LinuxPlatformDrawer(_projectInfoData);
+					break;
+
+				case BuildTarget.StandaloneOSX:
+					_platformDrawer = new MacPlatformDrawer(_projectInfoData);
+					break;
+
+				case BuildTarget.WebGL:
+					_platformDrawer = new WebPlatformDrawer(_projectInfoData);
+					break;
+			}
 		}
 		#endregion
 	}
