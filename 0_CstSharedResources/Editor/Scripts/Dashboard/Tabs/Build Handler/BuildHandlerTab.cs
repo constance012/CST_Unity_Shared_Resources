@@ -32,6 +32,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			}
 			else
 			{
+				DrawHelperButtons();
 				DrawBuildInfoSection();
 				DrawPlatformSpecificSection();
 			}
@@ -70,15 +71,39 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			}
 		}
 
+		private void DrawHelperButtons()
+		{
+			EditorGUILayout.LabelField("Helper Buttons", _subHeaderStyle);
+			GUILayout.BeginVertical(_boxStyle);
+			{
+				if (GUILayout.Button("Open Player Settings", GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle), GUILayout.MinHeight(30f)))
+				{
+					SettingsService.OpenProjectSettings("Project/Player");
+				}
+				if (GUILayout.Button("Open Build Profile", GUIStyleGetter.Get(GUIStyleType.CyanButtonStyle), GUILayout.MinHeight(30f)))
+				{
+					EditorApplication.ExecuteMenuItem("File/Build Profiles");
+				}
+			}
+			GUILayout.EndVertical();
+			EditorGUILayout.Space(10f);
+		}
+
 		private void DrawBuildInfoSection()
 		{
+			EditorGUILayout.LabelField("Build Information", _subHeaderStyle);
 			_buildInfoDrawer.Draw();
 			EditorGUILayout.Space(10f);
 		}
 
 		private void DrawPlatformSpecificSection()
 		{
-			_platformDrawer.Draw();
+			EditorGUILayout.LabelField($"{_platformDrawer.BuildTargetDisplayName} Build Options", _subHeaderStyle);
+			GUILayout.BeginVertical(_boxStyle);
+			{
+				_platformDrawer.Draw();
+			}
+			GUILayout.EndVertical();
 		}
 		#endregion
 
