@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -47,6 +49,13 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.Utilities
 		public static void RevealFolder(string path)
 		{
 			EditorUtility.RevealInFinder(path);
+		}
+
+		public static void ClearEditorConsole()
+		{
+			var logEntries = Type.GetType("UnityEditor.LogEntries, UnityEditor.dll");
+			var clearMethod = logEntries?.GetMethod("Clear", BindingFlags.Static | BindingFlags.Public);
+			clearMethod?.Invoke(null, null);
 		}
 	}
 }
