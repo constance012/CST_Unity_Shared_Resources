@@ -26,6 +26,12 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		#region Drawing Methods.
 		public override void Draw()
 		{
+			if (EditorApplication.isCompiling || EditorApplication.isUpdating)
+			{
+				DrawCompilingOrImportingWarning();
+				return;
+			}
+			
 			if (_buildHandler.NeedToSwitchBuildTarget)
 			{
 				DrawSwitchBuildTargetWarning();
@@ -36,6 +42,17 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 				DrawBuildInfoSection();
 				DrawPlatformSpecificSection();
 			}
+		}
+
+		private void DrawCompilingOrImportingWarning()
+		{
+			EditorGUILayout.HelpBox
+			(
+				"The Unity Editor is currently compiling scripts or importing assets.\n" +
+				"Please wait until the process is finished.",
+				MessageType.Warning
+			);
+			EditorGUILayout.Space(10f);
 		}
 
 		private void DrawSwitchBuildTargetWarning()
