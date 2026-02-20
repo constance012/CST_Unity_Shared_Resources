@@ -41,6 +41,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 				DrawHelperButtons();
 				DrawBuildInfoSection();
 				DrawPlatformSpecificSection();
+				DrawMainBuildSection();
 			}
 		}
 
@@ -91,6 +92,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		private void DrawHelperButtons()
 		{
 			EditorGUILayout.LabelField("Helper Buttons", _subHeaderStyle);
+
 			GUILayout.BeginVertical(_boxStyle);
 			{
 				if (GUILayout.Button("Open Player Settings", GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle), GUILayout.MinHeight(30f)))
@@ -103,6 +105,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 				}
 			}
 			GUILayout.EndVertical();
+			
 			EditorGUILayout.Space(10f);
 		}
 
@@ -116,11 +119,20 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		private void DrawPlatformSpecificSection()
 		{
 			EditorGUILayout.LabelField($"{_platformDrawer.BuildTargetDisplayName} Build Options", _subHeaderStyle);
+			
 			GUILayout.BeginVertical(_boxStyle);
 			{
 				_platformDrawer.Draw();
 			}
 			GUILayout.EndVertical();
+
+			EditorGUILayout.Space(10f);
+		}
+
+		private void DrawMainBuildSection()
+		{
+			EditorGUILayout.LabelField($"Main Build Controls", _subHeaderStyle);
+			_buildHandler.DrawMainBuildSection();
 		}
 		#endregion
 
@@ -128,7 +140,6 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		private void Initialize()
 		{
 			_projectInfoData = ProjectInfoDataObject.LoadOrCreateInstance();
-			_buildHandler = new BuildHandler(_projectInfoData);
 
 			_buildInfoDrawer = new BuildInfoDrawer(_projectInfoData);
 			_buildInfoDrawer.OnEnable();
@@ -157,6 +168,8 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 					_platformDrawer = new WebPlatformDrawer(_projectInfoData);
 					break;
 			}
+
+			_buildHandler = new BuildHandler(_projectInfoData, _platformDrawer);
 		}
 		#endregion
 	}

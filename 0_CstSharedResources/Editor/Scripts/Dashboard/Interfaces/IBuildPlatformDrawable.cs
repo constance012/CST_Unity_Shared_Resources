@@ -7,6 +7,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Interfaces
 		public BuildTarget BuildTarget { get; }
 		public string BuildTargetDisplayName { get; }
 
-		public void Build(string buildPath);
+		public void SetupBuildParameters(string buildPath);
+		public string GetFileExtension();
 	}
 }

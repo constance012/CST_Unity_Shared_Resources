@@ -22,9 +22,14 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			EditorGUILayout.HelpBox("Web Platform Drawer content goes here...", MessageType.Info);
 		}
 
-		public void Build(string buildPath)
+		public void SetupBuildParameters(string buildPath)
 		{
 			// TO-DO: Implement WebGL build logic here.
+		}
+
+		public string GetFileExtension()
+		{
+			return string.Empty;
 		}
 	}
 }
