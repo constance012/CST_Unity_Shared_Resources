@@ -29,6 +29,9 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 
 			_stringBuilder.AppendLine($"          {_projectInfoData.ProductName.ToUpper()}          ");
 			_stringBuilder.AppendLine();
+			_stringBuilder.AppendLine("========== PLATFORM INFORMATION ==========");
+			_stringBuilder.AppendLine($"Current Build Platform: {_projectInfoData.TargetPlatform}");
+			_stringBuilder.AppendLine();
 			_stringBuilder.AppendLine("========== GENERAL INFORMATION ==========");
 			_stringBuilder.AppendLine($"Application Identifier: {_projectInfoData.ApplicationIdentifier}");
 			_stringBuilder.AppendLine($"Product Name: {_projectInfoData.ProductName}");

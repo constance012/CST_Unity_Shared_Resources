@@ -39,7 +39,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			else
 			{
 				DrawHelperButtons();
-				DrawBuildInfoSection();
+				DrawBuildSummarizationSection();
 				DrawPlatformSpecificSection();
 				DrawMainBuildSection();
 			}
@@ -109,9 +109,9 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			EditorGUILayout.Space(10f);
 		}
 
-		private void DrawBuildInfoSection()
+		private void DrawBuildSummarizationSection()
 		{
-			EditorGUILayout.LabelField("Build Information", _subHeaderStyle);
+			EditorGUILayout.LabelField("Build Summarization", _subHeaderStyle);
 			_buildInfoDrawer.Draw();
 			EditorGUILayout.Space(10f);
 		}
