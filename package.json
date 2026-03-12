@@ -7,8 +7,6 @@
 	"changelogUrl": "https://github.com/constance012/CST_Unity_Shared_Resources/releases",
 	"licensesUrl": "https://github.com/constance012/CST_Unity_Shared_Resources/blob/develop/LICENSE",
 	"dependencies": {
-		"com.yasirkula.assetusagedetector": "https://github.com/yasirkula/UnityAssetUsageDetector.git",
-		"ayellowpaper.serialized-dictionary": "https://github.com/ayellowpaper/SerializedDictionary.git",
 		"com.unity.textmeshpro": "3.0.9"
 	},
 	"keywords": [
