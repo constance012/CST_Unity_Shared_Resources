@@ -1,6 +1,8 @@
 using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
 using CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo;
+using CSTGames.SharedResources.Editor.Dashboard.Utilities;
 using UnityEditor;
+using UnityEngine;
 
 namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 {
@@ -10,21 +12,40 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		public string BuildTargetDisplayName => "WebGL";
 
 		private ProjectInfoDataObject _projectInfoData;
+		private WebGLCompressionFormat _resourcesCompressionFormat = WebGLCompressionFormat.Disabled;
+		private WebGLTextureSubtarget _textureCompressionFormat = WebGLTextureSubtarget.ASTC;
+		private WebGLClientBrowserType _clientBrowserType;
+		private UnityEditor.WebGL.WasmCodeOptimization _codeOptimizationType;
 
 		public WebPlatformDrawer(ProjectInfoDataObject projectInfoData)
 		{
 			_projectInfoData = projectInfoData;
-			// TO-DO: Custom constructor logic.
 		}
 
 		public void Draw()
 		{
-			EditorGUILayout.HelpBox("Web Platform Drawer content goes here...", MessageType.Info);
+			GUILayout.BeginVertical();
+			{
+				GUIDrawHelper.EnumPopupWithLabel("Resources Compression Format: ", ref _resourcesCompressionFormat, GUILayout.Width(300f));
+				GUIDrawHelper.EnumPopupWithLabel("Texture Compression Format: ", ref _textureCompressionFormat, GUILayout.Width(300f));
+				
+				GUILayout.Space(10f);
+				GUIDrawHelper.EnumPopupWithLabel("Client Browser Type: ", ref _clientBrowserType, GUILayout.Width(300f));
+
+				GUILayout.Space(10f);
+				GUIDrawHelper.EnumPopupWithLabel("Code Optimization Type: ", ref _codeOptimizationType, GUILayout.Width(300f));
+			}
+			GUILayout.EndVertical();
 		}
 
 		public void SetupBuildParameters(string buildPath)
 		{
-			// TO-DO: Implement WebGL build logic here.
+			PlayerSettings.WebGL.compressionFormat = _resourcesCompressionFormat;
+			
+			EditorUserBuildSettings.webGLBuildSubtarget = _textureCompressionFormat;
+			EditorUserBuildSettings.webGLClientBrowserType = _clientBrowserType;
+
+			UnityEditor.WebGL.UserBuildSettings.codeOptimization = _codeOptimizationType;
 		}
 
 		public string GetFileExtension()
