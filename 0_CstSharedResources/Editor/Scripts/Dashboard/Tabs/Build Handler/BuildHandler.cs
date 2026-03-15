@@ -40,16 +40,14 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		{
 			GUILayout.BeginVertical();
 			{
-				GUILayout.Space(20f);
-				_isCleanBuild = GUILayout.Toggle(_isCleanBuild, "Clean Build", GUILayout.MinWidth(100));
-
 				GUILayout.Space(10f);
-				_compressionOption = (BuildCompressionOption)EditorGUILayout.EnumPopup("Compression Method: ", _compressionOption, GUILayout.Width(300));
+				GUIDrawHelper.ToggleWithLabel("Clean Build: ", ref _isCleanBuild, GUILayout.Width(300f));
+
+				GUIDrawHelper.EnumPopupWithLabel("Build Compression Format: ", ref _compressionOption, GUILayout.Width(300f));
 				
-				GUILayout.Space(10f);
-				_developBuildOptions = (DevelopBuildOption)EditorGUILayout.EnumFlagsField("Development Build Options: ", _developBuildOptions, GUILayout.Width(300));
+				GUIDrawHelper.EnumFlagsFieldWithLabel("Development Build Options: ", ref _developBuildOptions, GUILayout.Width(300f));
 
-				GUILayout.Space(20f);
+				GUILayout.Space(10f);
 				if (GUILayout.Button("BUILD PLAYER", GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle), GUILayout.MinHeight(50)))
 				{
 					ProcessBuildPlayer();

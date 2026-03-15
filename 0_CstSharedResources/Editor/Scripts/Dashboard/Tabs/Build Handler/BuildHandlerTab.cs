@@ -132,7 +132,12 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		private void DrawMainBuildSection()
 		{
 			EditorGUILayout.LabelField($"Main Build Controls", _subHeaderStyle);
-			_buildHandler.DrawMainBuildSection();
+
+			GUILayout.BeginVertical(_boxStyle);
+			{
+				_buildHandler.DrawMainBuildSection();
+			}
+			GUILayout.EndVertical();
 		}
 		#endregion
 
