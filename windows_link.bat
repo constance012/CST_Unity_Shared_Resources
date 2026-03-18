@@ -29,7 +29,8 @@ if errorlevel 1 (
 REM --- Remove old symbolic link if it exists ---
 if exist "%LINK_NAME%" (
     echo [Status] Removing old symbolic link: "%LINK_NAME%"...
-    del "%LINK_NAME%"
+    rd /s /q "%LINK_NAME%"
+    del /f /q "%LINK_NAME%"
 )
 
 REM --- Create new symbolic directory link ---
