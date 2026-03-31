@@ -38,22 +38,18 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 #region Main Draw Method
 		public void DrawMainBuildSection()
 		{
-			GUILayout.BeginVertical();
+			GUILayout.Space(10f);
+			GUIDrawHelper.ToggleWithLabel("Clean Build: ", ref _isCleanBuild, GUILayout.MinWidth(300f));
+
+			GUIDrawHelper.EnumPopupWithLabel("Build Compression Format: ", ref _compressionOption, GUILayout.MinWidth(300f));
+			
+			GUIDrawHelper.EnumFlagsFieldWithLabel("Development Build Options: ", ref _developBuildOptions, GUILayout.MinWidth(300f));
+
+			GUILayout.Space(10f);
+			if (GUILayout.Button("BUILD PLAYER", GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle), GUILayout.MinHeight(50)))
 			{
-				GUILayout.Space(10f);
-				GUIDrawHelper.ToggleWithLabel("Clean Build: ", ref _isCleanBuild, GUILayout.Width(300f));
-
-				GUIDrawHelper.EnumPopupWithLabel("Build Compression Format: ", ref _compressionOption, GUILayout.Width(300f));
-				
-				GUIDrawHelper.EnumFlagsFieldWithLabel("Development Build Options: ", ref _developBuildOptions, GUILayout.Width(300f));
-
-				GUILayout.Space(10f);
-				if (GUILayout.Button("BUILD PLAYER", GUIStyleGetter.Get(GUIStyleType.YellowButtonStyle), GUILayout.MinHeight(50)))
-				{
-					ProcessBuildPlayer();
-				}
+				ProcessBuildPlayer();
 			}
-			GUILayout.EndVertical();
 		}
 #endregion
 

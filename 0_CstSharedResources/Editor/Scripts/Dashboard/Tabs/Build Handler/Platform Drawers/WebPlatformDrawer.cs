@@ -24,24 +24,20 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 
 		public void Draw()
 		{
-			GUILayout.BeginVertical();
-			{
-				GUIDrawHelper.EnumPopupWithLabel("Resources Compression Format: ", ref _resourcesCompressionFormat, GUILayout.Width(300f));
-				GUIDrawHelper.EnumPopupWithLabel("Texture Compression Format: ", ref _textureCompressionFormat, GUILayout.Width(300f));
-				
-				GUILayout.Space(10f);
-				GUIDrawHelper.EnumPopupWithLabel("Client Browser Type: ", ref _clientBrowserType, GUILayout.Width(300f));
+			GUIDrawHelper.EnumPopupWithLabel("Resources Compression Format: ", ref _resourcesCompressionFormat, GUILayout.MinWidth(300f));
+			GUIDrawHelper.EnumPopupWithLabel("Texture Compression Format: ", ref _textureCompressionFormat, GUILayout.MinWidth(300f));
 
-				GUILayout.Space(10f);
-				GUIDrawHelper.EnumPopupWithLabel("Code Optimization Type: ", ref _codeOptimizationType, GUILayout.Width(300f));
-			}
-			GUILayout.EndVertical();
+			GUILayout.Space(10f);
+			GUIDrawHelper.EnumPopupWithLabel("Client Browser Type: ", ref _clientBrowserType, GUILayout.MinWidth(300f));
+
+			GUILayout.Space(10f);
+			GUIDrawHelper.EnumPopupWithLabel("Code Optimization Type: ", ref _codeOptimizationType, GUILayout.MinWidth(300f));
 		}
 
 		public void SetupBuildParameters(string buildPath)
 		{
 			PlayerSettings.WebGL.compressionFormat = _resourcesCompressionFormat;
-			
+
 			EditorUserBuildSettings.webGLBuildSubtarget = _textureCompressionFormat;
 			EditorUserBuildSettings.webGLClientBrowserType = _clientBrowserType;
 
