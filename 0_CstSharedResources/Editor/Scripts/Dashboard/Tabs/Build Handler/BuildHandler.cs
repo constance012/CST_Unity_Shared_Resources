@@ -104,7 +104,14 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
 
-			EditorUtility.RevealInFinder(fileNamePath);
+			if (File.Exists(fileNamePath))
+			{
+				EditorUtility.RevealInFinder(fileNamePath);
+			}
+			else
+			{
+				EditorUtility.RevealInFinder(targetBuildPath);
+			}
 
 			Debug.Log($"[CST Dashboard] Build SUCCEEDED!\n\n" +
 				$"Total time: {buildReport.summary.totalTime}.\n" +
