@@ -63,6 +63,13 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		public void ProcessBuildPlayer()
 		{
 			string parentBuildPath = BuildUtils.PromptSelectBuildDirectory();
+
+			if (string.IsNullOrEmpty(parentBuildPath))
+			{
+				Debug.LogWarning("Build cancelled: No build directory was selected.");
+				return;
+			}
+
 			string targetBuildPath = Path.Combine(parentBuildPath, _platformDrawer.BuildTargetDisplayName);
 			
 			BuildUtils.CleanBuildDirectory(targetBuildPath);
