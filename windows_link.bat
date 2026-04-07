@@ -8,7 +8,7 @@ set "SCRIPT_DIR=%~dp0"
 REM Remove trailing backslash if present
 if "%SCRIPT_DIR:~-1%"=="\" set "SCRIPT_DIR=%SCRIPT_DIR:~0,-1%"
 
-echo Please pass in your project's name in double quotes, example: %~nx0 "Project Name"
+echo Please pass in your project's name, wrap in double quotes if needed, example: %~nx0 "Project Name"
 set /p PROJECT_NAME=Enter the project name: 
 
 REM === Trim surrounding quotes (if user pasted with them) ===
@@ -17,7 +17,9 @@ set "PROJECT_NAME=%PROJECT_NAME:"=%"
 REM --- Path Configurations (relative to the script's directory) ---
 set "TARGET_FOLDER=%SCRIPT_DIR%\..\%PROJECT_NAME%\Assets"
 set "LINK_NAME=0_CstSharedResources"
-set "LINK_TARGET=%SCRIPT_DIR%\%LINK_NAME%"
+
+for %%F in ("%SCRIPT_DIR%") do set "SCRIPT_FOLDER_NAME=%%~nxF"
+set "LINK_TARGET=..\..\!SCRIPT_FOLDER_NAME!\%LINK_NAME%"
 
 REM --- Change to the target folder ---
 cd /d "%TARGET_FOLDER%"
