@@ -11,10 +11,10 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 
 		private ProjectInfoDataObject _projectInfoData;
 
-		public MacPlatformDrawer(ProjectInfoDataObject projectInfoData)
+		public void Initialize(ProjectInfoDataObject projectInfoData)
 		{
 			_projectInfoData = projectInfoData;
-			// TO-DO: Custom constructor logic.
+			// TO-DO: Custom initialization logic.
 		}
 
 		public void Draw()

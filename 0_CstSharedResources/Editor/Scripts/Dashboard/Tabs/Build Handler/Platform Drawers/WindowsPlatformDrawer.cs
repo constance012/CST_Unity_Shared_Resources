@@ -17,7 +17,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		private bool _shouldCopyPDBFiles = false;
 		private bool _shouldCreatVisualStudioSolution = false;
 
-		public WindowsPlatformDrawer(ProjectInfoDataObject projectInfoData)
+		public void Initialize(ProjectInfoDataObject projectInfoData)
 		{
 			_projectInfoData = projectInfoData;
 

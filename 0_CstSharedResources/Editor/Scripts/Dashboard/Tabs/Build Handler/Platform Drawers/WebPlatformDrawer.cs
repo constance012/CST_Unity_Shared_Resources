@@ -17,7 +17,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		private WebGLClientBrowserType _clientBrowserType;
 		private UnityEditor.WebGL.WasmCodeOptimization _codeOptimizationType;
 
-		public WebPlatformDrawer(ProjectInfoDataObject projectInfoData)
+		public void Initialize(ProjectInfoDataObject projectInfoData)
 		{
 			_projectInfoData = projectInfoData;
 		}

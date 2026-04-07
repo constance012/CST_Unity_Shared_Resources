@@ -148,6 +148,8 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 
 			_buildInfoDrawer = new BuildInfoDrawer(_projectInfoData);
 			_buildInfoDrawer.OnEnable();
+
+			_buildHandler ??= new BuildHandler();
 		}
 
 		private void ConstructBuildPlatformDrawer()
@@ -156,25 +158,26 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			{
 				case BuildTarget.StandaloneWindows:
 				case BuildTarget.StandaloneWindows64:
-					_platformDrawer = new WindowsPlatformDrawer(_projectInfoData);
+					_platformDrawer ??= new WindowsPlatformDrawer();
 					break;
 				
 				case BuildTarget.StandaloneLinux64:
 				case BuildTarget.EmbeddedLinux:
 				case BuildTarget.LinuxHeadlessSimulation:
-					_platformDrawer = new LinuxPlatformDrawer(_projectInfoData);
+					_platformDrawer ??= new LinuxPlatformDrawer();
 					break;
 
 				case BuildTarget.StandaloneOSX:
-					_platformDrawer = new MacPlatformDrawer(_projectInfoData);
+					_platformDrawer ??= new MacPlatformDrawer();
 					break;
 
 				case BuildTarget.WebGL:
-					_platformDrawer = new WebPlatformDrawer(_projectInfoData);
+					_platformDrawer ??= new WebPlatformDrawer();
 					break;
 			}
 
-			_buildHandler = new BuildHandler(_projectInfoData, _platformDrawer);
+			_platformDrawer.Initialize(_projectInfoData);
+			_buildHandler.Initialize(_projectInfoData, _platformDrawer);
 		}
 		#endregion
 	}

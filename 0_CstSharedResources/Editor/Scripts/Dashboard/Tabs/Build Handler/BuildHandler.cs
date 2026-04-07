@@ -16,15 +16,15 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		public bool NeedToSwitchBuildTarget => _needToSwitchBuildTarget;
 
 		private ProjectInfoDataObject _projectInfoData;
-		private readonly BuildTarget _activeBuildTarget;
-		private readonly BuildTargetGroup _selectedBuildTargetGroup;
+		private BuildTarget _activeBuildTarget;
+		private BuildTargetGroup _selectedBuildTargetGroup;
 		private DevelopBuildOption _developBuildOptions;
 		private BuildCompressionOption _compressionOption;
 		private bool _needToSwitchBuildTarget;
 		private bool _isCleanBuild;
 		private IBuildPlatformDrawable _platformDrawer;
 
-		public BuildHandler(ProjectInfoDataObject projectInfoData, IBuildPlatformDrawable platformDrawer)
+		public void Initialize(ProjectInfoDataObject projectInfoData, IBuildPlatformDrawable platformDrawer)
 		{
 			_activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
 
