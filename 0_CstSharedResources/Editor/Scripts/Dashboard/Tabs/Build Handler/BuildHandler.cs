@@ -70,7 +70,7 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 				return;
 			}
 
-			string targetBuildPath = Path.Combine(parentBuildPath, _platformDrawer.BuildTargetDisplayName);
+			string targetBuildPath = Path.Combine(parentBuildPath, GetBuildFolderName());
 			
 			BuildUtils.CleanBuildDirectory(targetBuildPath);
 
@@ -160,6 +160,18 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 				Path.Combine(buildPath, $"{Application.productName}_{_projectInfoData.Version}_{_projectInfoData.BuildNumber}{fileExtension}");
 			
 			return fileName;
+		}
+
+		private string GetBuildFolderName()
+		{
+			return _projectInfoData.TargetPlatform switch
+			{
+				BuildTarget.StandaloneWindows => "Windows32",
+				BuildTarget.StandaloneWindows64 => "Windows64",
+				BuildTarget.StandaloneLinux64 or BuildTarget.EmbeddedLinux or BuildTarget.LinuxHeadlessSimulation => "Linux",
+				BuildTarget.StandaloneOSX => "MacOS",
+				_ => _projectInfoData.TargetPlatform.ToString()
+			};
 		}
 #endregion
 	}
