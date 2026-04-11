@@ -14,17 +14,16 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		public void Initialize(ProjectInfoDataObject projectInfoData)
 		{
 			_projectInfoData = projectInfoData;
-			// TO-DO: Custom initialization logic.
 		}
 
 		public void Draw()
 		{
-			EditorGUILayout.HelpBox("Linux Platform Drawer content goes here...", MessageType.Info);
+			EditorGUILayout.HelpBox("Linux Platform does not require any specific build settings.", MessageType.Info);
 		}
 
 		public void SetupBuildParameters(string buildPath)
 		{
-			// TO-DO: Implement Linux build logic here.
+			
 		}
 
 		public string GetFileExtension()
