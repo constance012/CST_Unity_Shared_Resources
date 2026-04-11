@@ -103,6 +103,11 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 				{
 					EditorApplication.ExecuteMenuItem("File/Build Profiles");
 				}
+				if (GUILayout.Button("Open Previous Build Folder", GUIStyleGetter.Get(GUIStyleType.NormalButtonStyle), GUILayout.MinHeight(30f)))
+				{
+					string buildFolderPath = PlayerPrefsRuntimeHelper.GetValue(BuildHandler.PLAYER_PREFS_PREVIOUS_BUILD_PATH_KEY, string.Empty);
+					EditorUtility.RevealInFinder(buildFolderPath);
+				}
 			}
 			GUILayout.EndVertical();
 			
