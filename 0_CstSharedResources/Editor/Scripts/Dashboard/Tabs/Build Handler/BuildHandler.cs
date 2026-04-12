@@ -58,8 +58,14 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 #region Build Handling Methods
 		public void SwitchActiveBuildTarget()
 		{
-			EditorUserBuildSettings.SwitchActiveBuildTarget(_selectedBuildTargetGroup, _projectInfoData.TargetPlatform);
-			_needToSwitchBuildTarget = false;
+			bool isSwitched = EditorUserBuildSettings.SwitchActiveBuildTarget(_selectedBuildTargetGroup, _projectInfoData.TargetPlatform);
+			_needToSwitchBuildTarget = !isSwitched;
+
+			if (!isSwitched)
+			{
+				EditorUtility.DisplayDialog("Switch Build Target", $"Failed to switch active build target to {_projectInfoData.TargetPlatform}. " +
+					"Most likely it's unsupported or missing required Editor modules.", "Oh...kay");
+			}
 		}
 
 		public void ProcessBuildPlayer()
