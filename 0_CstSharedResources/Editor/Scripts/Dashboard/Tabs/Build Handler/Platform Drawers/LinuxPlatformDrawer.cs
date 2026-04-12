@@ -1,3 +1,4 @@
+#if UNITY_STANDALONE_LINUX
 using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
 using CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo;
 using UnityEditor;
@@ -32,3 +33,4 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		}
 	}
 }
+#endif

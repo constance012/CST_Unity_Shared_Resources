@@ -1,3 +1,4 @@
+#if UNITY_STANDALONE_WIN
 using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
 using CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo;
 using CSTGames.SharedResources.Editor.Dashboard.Utilities;
@@ -64,3 +65,4 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		Arm64Bit = 2
 	}
 }
+#endif

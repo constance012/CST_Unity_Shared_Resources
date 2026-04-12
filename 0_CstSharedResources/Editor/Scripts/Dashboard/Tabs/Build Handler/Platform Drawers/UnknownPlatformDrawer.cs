@@ -16,7 +16,9 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 
 		public void Draw()
 		{
-			EditorGUILayout.HelpBox("Unknown Platform selected, no specific build options available.", MessageType.Warning);
+			EditorGUILayout.HelpBox("Unknown Platform selected, no specific build options available.\n" +
+				"Try installing the necessary platform support module in the Unity Hub and restart the Editor.\n" +
+				"Or select a different platform in the Project Info settings.", MessageType.Warning);
 		}
 
 		public void SetupBuildParameters(string buildPath)

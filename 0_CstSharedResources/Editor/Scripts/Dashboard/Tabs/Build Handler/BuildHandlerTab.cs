@@ -163,21 +163,33 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			{
 				case BuildTarget.StandaloneWindows:
 				case BuildTarget.StandaloneWindows64:
+#if UNITY_STANDALONE_WIN
 					_platformDrawer ??= new WindowsPlatformDrawer();
+#endif
 					break;
 				
 				case BuildTarget.StandaloneLinux64:
 				case BuildTarget.EmbeddedLinux:
 				case BuildTarget.LinuxHeadlessSimulation:
+#if UNITY_STANDALONE_LINUX
 					_platformDrawer ??= new LinuxPlatformDrawer();
+#endif
 					break;
 
 				case BuildTarget.StandaloneOSX:
+#if UNITY_STANDALONE_OSX
 					_platformDrawer ??= new MacPlatformDrawer();
+#endif
 					break;
 
 				case BuildTarget.WebGL:
+#if UNITY_WEBGL
 					_platformDrawer ??= new WebPlatformDrawer();
+#endif
+					break;
+				
+				default:
+					_platformDrawer ??= new UnknownPlatformDrawer();
 					break;
 			}
 

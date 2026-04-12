@@ -1,3 +1,4 @@
+#if UNITY_STANDALONE_OSX
 using CSTGames.SharedResources.Editor.Dashboard.Interfaces;
 using CSTGames.SharedResources.Editor.Dashboard.Tabs.ProjectInfo;
 using CSTGames.SharedResources.Editor.Dashboard.Utilities;
@@ -59,3 +60,4 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		BothIntelAndApple = 2
 	}
 }
+#endif
