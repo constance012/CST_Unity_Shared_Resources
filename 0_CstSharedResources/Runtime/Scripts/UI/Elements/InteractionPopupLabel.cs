@@ -44,9 +44,8 @@ namespace CSTGames.SharedResources
 			SetLabelName("");
 
 #if ENABLE_INPUT_SYSTEM
-		keyboardCue.text = NewInputManager.Instance.GetDisplayString(KeybindingActions.Interact);
-		
-#elif ENABLE_LEGACY_INPUT_MANAGER
+			keyboardCue.text = NewInputManager.Instance.GetDisplayString(KeybindingAction.Interact);	
+#else
 			keyboardCue.text = LegacyInputManager.Instance.GetKeyForAction(KeybindingAction.Interact).ToString();
 #endif
 

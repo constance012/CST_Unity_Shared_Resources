@@ -1,4 +1,3 @@
-#if ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine;
 
 namespace CSTGames.SharedResources
@@ -93,4 +92,3 @@ namespace CSTGames.SharedResources
 		}
 	}
 }
-#endif

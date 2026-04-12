@@ -54,9 +54,9 @@ namespace CSTGames.SharedResources
 		public void ReadInputValues()
 		{
 #if ENABLE_INPUT_SYSTEM
-			_movementDirection = NewInputManager.Instance.ReadValue<Vector2>(KeybindingActions.Movement);
+			_movementDirection = NewInputManager.Instance.ReadValue<Vector2>(KeybindingAction.Movement);
 
-#elif ENABLE_LEGACY_INPUT_MANAGER
+#else
 			_movementDirection.x = LegacyInputManager.Instance.GetAxisRaw("Horizontal");
 			_movementDirection.y = LegacyInputManager.Instance.GetAxisRaw("Vertical");
 			_movementDirection.Normalize();
