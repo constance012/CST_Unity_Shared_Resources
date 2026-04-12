@@ -76,3 +76,7 @@ crashlytics-build.properties
 
 # macOS folder attribute
 .DS_Store
+
+# Unity new input system generated file
+*[Ii]nput[Aa]ction[Ss].cs
+*[Ii]nput[Aa]ction[Ss].cs.meta
