@@ -15,8 +15,6 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 		public BuildTargetGroup SelectedBuildTargetGroup => _selectedBuildTargetGroup;
 		public bool NeedToSwitchBuildTarget => _needToSwitchBuildTarget;
 
-		public const string PLAYER_PREFS_PREVIOUS_BUILD_PATH_KEY = "CST_Dashboard_PreviousBuildPath";
-
 		private ProjectInfoDataObject _projectInfoData;
 		private BuildTarget _activeBuildTarget;
 		private BuildTargetGroup _selectedBuildTargetGroup;
@@ -115,12 +113,12 @@ namespace CSTGames.SharedResources.Editor.Dashboard.Tabs.BuildHandler
 			if (File.Exists(fileNamePath))
 			{
 				EditorUtility.RevealInFinder(fileNamePath);
-				PlayerPrefsRuntimeHelper.SetValue(PLAYER_PREFS_PREVIOUS_BUILD_PATH_KEY, fileNamePath);
+				PlayerPrefsRuntimeHelper.SetValue(GlobalDefines.PLAYER_PREFS_PREVIOUS_BUILD_PATH_KEY, fileNamePath);
 			}
 			else
 			{
 				EditorUtility.RevealInFinder(targetBuildPath);
-				PlayerPrefsRuntimeHelper.SetValue(PLAYER_PREFS_PREVIOUS_BUILD_PATH_KEY, targetBuildPath);
+				PlayerPrefsRuntimeHelper.SetValue(GlobalDefines.PLAYER_PREFS_PREVIOUS_BUILD_PATH_KEY, targetBuildPath);
 			}
 
 			Debug.Log($"[CST Dashboard] Build SUCCEEDED!\n\n" +
