@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using JetBrains.Annotations;
 
-namespace CST.Shared.Resources.Editor
+namespace CSTGames.SharedResources.Editor
 {
 	[UsedImplicitly, CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
 	public class ReadOnlyDrawer : PropertyDrawer

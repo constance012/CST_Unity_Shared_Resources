@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	/// <summary>
 	/// Makes a temporary singleton reference for the current scene only, which will be destroy upon scene transitions.

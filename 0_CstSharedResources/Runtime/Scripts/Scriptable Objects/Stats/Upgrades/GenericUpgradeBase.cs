@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public abstract class GenericUpgradeBase<TUnit> : UpgradeBase where TUnit : ScriptableObject
 	{

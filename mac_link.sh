@@ -4,12 +4,12 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # === Prompt for project name ===
-read -p "Enter the project name: " PROJECT_NAME
+read -p "Enter the project name, wrap in double quotes if needed: " PROJECT_NAME
 
 # === Configuration ===
 TARGET_FOLDER="$SCRIPT_DIR/../$PROJECT_NAME/Assets"
 LINK_NAME="0_CstSharedResources"
-LINK_TARGET="$SCRIPT_DIR/$LINK_NAME"
+LINK_TARGET="../../$(basename "$SCRIPT_DIR")/$LINK_NAME"
 
 # === Change to the target folder ===
 if [ ! -d "$TARGET_FOLDER" ]; then

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[AddComponentMenu("Object Pools/Effect Pool")]
 	public sealed class EffectPool : MultiplePrefabsPool<EffectPool, EffectType, PoolableEffectBase>

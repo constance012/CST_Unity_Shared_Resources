@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public class RegularHealthBar : MonoBehaviour, IVisitable
 	{

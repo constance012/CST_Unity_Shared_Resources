@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 	{

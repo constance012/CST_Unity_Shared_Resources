@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[AddComponentMenu("Object Pools/Projectile Pool")]
 	public sealed class ProjectilePool : MultiplePrefabsPool<ProjectilePool, ProjectileType, ProjectileBase>

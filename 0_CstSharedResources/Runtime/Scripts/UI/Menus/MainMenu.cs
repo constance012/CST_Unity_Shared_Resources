@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public sealed class MainMenu : MonoBehaviour
 	{

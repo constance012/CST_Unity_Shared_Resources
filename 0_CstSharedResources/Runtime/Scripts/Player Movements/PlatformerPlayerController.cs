@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[RequireComponent(typeof(Rigidbody2D))]
 	public class PlatformerPlayerController : MonoBehaviour, IPlayerController
@@ -84,11 +84,11 @@ namespace CST.Shared.Resources
 		public void ReadInputValues()
 		{
 #if ENABLE_INPUT_SYSTEM
-			_frameInput.jumpPressedDown = NewInputManager.Instance.WasPressedThisFrame(KeybindingActions.Jump);
-			_frameInput.jumpHeld = NewInputManager.Instance.IsPressed(KeybindingActions.Jump);
-			_frameInput.direction = NewInputManager.Instance.ReadValue<Vector2>(KeybindingActions.Movement);
+			_frameInput.jumpPressedDown = NewInputManager.Instance.WasPressedThisFrame(KeybindingAction.Jump);
+			_frameInput.jumpHeld = NewInputManager.Instance.IsPressed(KeybindingAction.Jump);
+			_frameInput.direction = NewInputManager.Instance.ReadValue<Vector2>(KeybindingAction.Movement);
 
-#elif ENABLE_LEGACY_INPUT_MANAGER
+#else
 			_frameInput.jumpPressedDown = LegacyInputManager.Instance.GetKeyDown(KeybindingAction.Jump);
 			_frameInput.jumpHeld = LegacyInputManager.Instance.GetKey(KeybindingAction.Jump);
 

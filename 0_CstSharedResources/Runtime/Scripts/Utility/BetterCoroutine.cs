@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public class BetterCoroutine
 	{

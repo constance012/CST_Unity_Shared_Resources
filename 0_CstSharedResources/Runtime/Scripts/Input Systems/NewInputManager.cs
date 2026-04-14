@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Utilities;
 using UnityDebug = UnityEngine.Debug;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	/// <summary>
 	/// Manages inputs from various devices and sources, using the NEW input system.
@@ -17,14 +17,16 @@ namespace CST.Shared.Resources
 	{
 		public event EventHandler OnAttackAction;
 		public event EventHandler<InputActionPhase> OnAimModeToggleAction;
-		public event EventHandler OnContinueDialogueAction;
 		public event EventHandler OnReloadAction;
+		public event EventHandler OnJumpAction;
+		public event EventHandler OnOpenInventoryAction;
+		public event EventHandler OnContinueDialogueAction;
 		public event EventHandler OnBackToMenuAction;
 		public event EventHandler OnSkipPlayableAction;
 
 		// Private fields.
 		private PlayerInputActions _playerInputActions;
-		private Dictionary<KeybindingActions, InputAction> _inputActions;
+		private Dictionary<KeybindingAction, InputAction> _inputActions;
 
 		protected override void Awake()
 		{
@@ -48,21 +50,31 @@ namespace CST.Shared.Resources
 			OnAimModeToggleAction?.Invoke(this, context.phase);
 		}
 
-		private void ContinueDialogue_performed(InputAction.CallbackContext context)
+		private void Jump_performed(InputAction.CallbackContext context)
 		{
-			OnContinueDialogueAction?.Invoke(this, EventArgs.Empty);
+			OnJumpAction?.Invoke(this, EventArgs.Empty);
 		}
-		
+
 		private void Reload_performed(InputAction.CallbackContext context)
 		{
 			OnReloadAction?.Invoke(this, EventArgs.Empty);
 		}
 		
+		private void OpenInventory_performed(InputAction.CallbackContext context)
+		{
+			OnOpenInventoryAction?.Invoke(this, EventArgs.Empty);
+		}
+		
+		private void ContinueDialogue_performed(InputAction.CallbackContext context)
+		{
+			OnContinueDialogueAction?.Invoke(this, EventArgs.Empty);
+		}
+
 		private void BackToMenu_performed(InputAction.CallbackContext context)
 		{
 			OnBackToMenuAction?.Invoke(this, EventArgs.Empty);
 		}
-		
+
 		private void SkipPlayable_performed(InputAction.CallbackContext context)
 		{
 			OnSkipPlayableAction?.Invoke(this, EventArgs.Empty);
@@ -70,12 +82,12 @@ namespace CST.Shared.Resources
 		#endregion
 
 		#region Get data and value methods.
-		public TValue ReadValue<TValue>(KeybindingActions action) where TValue : struct
+		public TValue ReadValue<TValue>(KeybindingAction action) where TValue : struct
 		{
 			return _inputActions[action].ReadValue<TValue>();
 		}
 
-		public string GetDisplayString(KeybindingActions action, int index = 0)
+		public string GetDisplayString(KeybindingAction action, int index = 0)
 		{
 			ReadOnlyArray<InputBinding> bindings = _inputActions[action].bindings;
 			index = Mathf.Clamp(index, 0, bindings.Count - 1);
@@ -110,7 +122,7 @@ namespace CST.Shared.Resources
 		{
 			return GetMouseButtonControl(button).wasReleasedThisFrame;
 		}
-		
+
 		public bool GetKeyDown(Key key)
 		{
 			return Keyboard.current[key].wasPressedThisFrame;
@@ -126,17 +138,17 @@ namespace CST.Shared.Resources
 			return Keyboard.current[key].wasReleasedThisFrame;
 		}
 
-		public bool WasPressedThisFrame(KeybindingActions action)
+		public bool WasPressedThisFrame(KeybindingAction action)
 		{
 			return _inputActions[action].WasPressedThisFrame();
 		}
 
-		public bool IsPressed(KeybindingActions action)
+		public bool IsPressed(KeybindingAction action)
 		{
 			return _inputActions[action].IsPressed();
 		}
 
-		public bool WasReleasedThisFrame(KeybindingActions action)
+		public bool WasReleasedThisFrame(KeybindingAction action)
 		{
 			return _inputActions[action].WasReleasedThisFrame();
 		}
@@ -145,53 +157,78 @@ namespace CST.Shared.Resources
 		#region Initialization and Clean up.
 		private void Initialize()
 		{
-			_playerInputActions = new PlayerInputActions();
+			SetupInputActions();
 
-			_playerInputActions.Player.Enable();
-
-			_inputActions ??= new Dictionary<KeybindingActions, InputAction>()
-			{
-				[KeybindingActions.Attack] = _playerInputActions.Player.Attack,
-				[KeybindingActions.ToggleAimMode] = _playerInputActions.Player.ToggleAimMode,
-				[KeybindingActions.Aiming] = _playerInputActions.Player.Aiming,
-
-				[KeybindingActions.Movement] = _playerInputActions.Player.Movement,
-				[KeybindingActions.ContinueDialogue] = _playerInputActions.Player.ContinueDialogue,
-				[KeybindingActions.Interact] = _playerInputActions.Player.Interact,
-				[KeybindingActions.Reload] = _playerInputActions.Player.Reload,
-				[KeybindingActions.BackToMenu] = _playerInputActions.Player.BackToMenu,
-				[KeybindingActions.SkipPlayable] = _playerInputActions.Player.SkipPlayable,
-			};
-
-			Subscribe(KeybindingActions.Attack, ActionEventType.Performed, Attack_performed);
-
-			Subscribe(KeybindingActions.ToggleAimMode, ActionEventType.Started, AimMode_toggled);
-			Subscribe(KeybindingActions.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
-
-			Subscribe(KeybindingActions.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
-			Subscribe(KeybindingActions.Reload, ActionEventType.Performed, Reload_performed);
-			Subscribe(KeybindingActions.BackToMenu, ActionEventType.Performed, BackToMenu_performed);
-			Subscribe(KeybindingActions.SkipPlayable, ActionEventType.Performed, SkipPlayable_performed);
+			SubscribeCallbacks();
 		}
 
 		private void Dispose()
 		{
-			Unsubscribe(KeybindingActions.Attack, ActionEventType.Performed, Attack_performed);
-
-			Unsubscribe(KeybindingActions.ToggleAimMode, ActionEventType.Started, AimMode_toggled);
-			Unsubscribe(KeybindingActions.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
-
-			Unsubscribe(KeybindingActions.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
-			Unsubscribe(KeybindingActions.Reload, ActionEventType.Performed, Reload_performed);
-			Unsubscribe(KeybindingActions.BackToMenu, ActionEventType.Performed, BackToMenu_performed);
-			Unsubscribe(KeybindingActions.SkipPlayable, ActionEventType.Performed, SkipPlayable_performed);
-			
+			UnsubscribeCallbacks();
 			_playerInputActions.Dispose();
+		}
+
+		private void SetupInputActions()
+		{
+			_playerInputActions = new PlayerInputActions();
+
+			_playerInputActions.Player.Enable();
+
+			_inputActions ??= new Dictionary<KeybindingAction, InputAction>()
+			{
+				[KeybindingAction.Attack] = _playerInputActions.Player.Attack,
+				[KeybindingAction.ToggleAimMode] = _playerInputActions.Player.ToggleAimMode,
+				[KeybindingAction.Aiming] = _playerInputActions.Player.Aiming,
+
+				[KeybindingAction.Movement] = _playerInputActions.Player.Movement,
+				[KeybindingAction.Jump] = _playerInputActions.Player.Jump,
+
+				[KeybindingAction.Interact] = _playerInputActions.Player.Interact,
+				[KeybindingAction.Reload] = _playerInputActions.Player.Reload,
+				[KeybindingAction.OpenInventory] = _playerInputActions.Player.OpenInventory,
+
+				[KeybindingAction.ContinueDialogue] = _playerInputActions.Player.ContinueDialogue,
+				[KeybindingAction.BackToMenu] = _playerInputActions.Player.BackToMenu,
+
+				[KeybindingAction.SkipPlayable] = _playerInputActions.Player.SkipPlayable,
+			};
 		}
 		#endregion
 
-		#region Event subscription management.
-		private void Subscribe(KeybindingActions action, ActionEventType eventType, Action<InputAction.CallbackContext> method)
+		#region Callbacks subscription management.
+		private void SubscribeCallbacks()
+		{
+			Subscribe(KeybindingAction.Attack, ActionEventType.Performed, Attack_performed);
+
+			Subscribe(KeybindingAction.ToggleAimMode, ActionEventType.Started, AimMode_toggled);
+			Subscribe(KeybindingAction.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
+
+			Subscribe(KeybindingAction.Jump, ActionEventType.Performed, Jump_performed);
+			Subscribe(KeybindingAction.Reload, ActionEventType.Performed, Reload_performed);
+			Subscribe(KeybindingAction.OpenInventory, ActionEventType.Performed, OpenInventory_performed);
+			Subscribe(KeybindingAction.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
+			
+			Subscribe(KeybindingAction.BackToMenu, ActionEventType.Performed, BackToMenu_performed);
+			Subscribe(KeybindingAction.SkipPlayable, ActionEventType.Performed, SkipPlayable_performed);
+		}
+
+		private void UnsubscribeCallbacks()
+		{
+			Unsubscribe(KeybindingAction.Attack, ActionEventType.Performed, Attack_performed);
+
+			Unsubscribe(KeybindingAction.ToggleAimMode, ActionEventType.Started, AimMode_toggled);
+			Unsubscribe(KeybindingAction.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
+
+			Unsubscribe(KeybindingAction.Jump, ActionEventType.Performed, Jump_performed);
+			Unsubscribe(KeybindingAction.Reload, ActionEventType.Performed, Reload_performed);
+			Unsubscribe(KeybindingAction.OpenInventory, ActionEventType.Performed, OpenInventory_performed);
+			Unsubscribe(KeybindingAction.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
+
+			Unsubscribe(KeybindingAction.BackToMenu, ActionEventType.Performed, BackToMenu_performed);
+			Unsubscribe(KeybindingAction.SkipPlayable, ActionEventType.Performed, SkipPlayable_performed);
+		}
+
+		private void Subscribe(KeybindingAction action, ActionEventType eventType, Action<InputAction.CallbackContext> method)
 		{
 			switch (eventType)
 			{
@@ -207,7 +244,7 @@ namespace CST.Shared.Resources
 			}
 		}
 
-		private void Unsubscribe(KeybindingActions action, ActionEventType eventType, Action<InputAction.CallbackContext> method)
+		private void Unsubscribe(KeybindingAction action, ActionEventType eventType, Action<InputAction.CallbackContext> method)
 		{
 			switch (eventType)
 			{

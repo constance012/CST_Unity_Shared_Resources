@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public sealed class SettingsMenu : MonoBehaviour
 	{

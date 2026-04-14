@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public sealed class TweenableUIMaster : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 	{

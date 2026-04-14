@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityRandom = UnityEngine.Random;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	[AddComponentMenu("Singletons/Audio Manager")]
 	public sealed class AudioManager : PersistentSingleton<AudioManager>

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CST.Shared.Resources
+namespace CSTGames.SharedResources
 {
 	public class SpriteSwapButton : Button
 	{
