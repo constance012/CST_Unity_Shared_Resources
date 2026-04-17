@@ -17,11 +17,10 @@ namespace CSTGames.SharedResources
 		public static Vector2 Position { get; private set; }
 		public static event Action<Vector2> OnVelocityChanged;
 
-		// Private fields.
 		private Vector2 _movementDirection;
 		private Vector2 _previousDirection;
 		private float _maxSpeed;
-		private float _currentSpeed;
+		private float _currentSpeedSquared;
 
 		private void Start()
 		{
@@ -65,23 +64,19 @@ namespace CSTGames.SharedResources
 
 		public void UpdateVelocity()
 		{
-			OnVelocityChanged?.Invoke(rb2D.linearVelocity);
-
 			if (_movementDirection.sqrMagnitude > .01f)
 			{
-				_currentSpeed += acceleration * Time.deltaTime;
-				_currentSpeed = Mathf.Min(_maxSpeed, _currentSpeed);
-
-				rb2D.linearVelocity = _movementDirection * _currentSpeed;
+				Vector2 targetSpeed = _movementDirection * _maxSpeed;
+				rb2D.linearVelocity = Vector2.MoveTowards(rb2D.linearVelocity, targetSpeed, acceleration * Time.deltaTime);
 			}
 
-			else if (_currentSpeed > 0f)
+			else if (_currentSpeedSquared > 0f)
 			{
-				_currentSpeed -= deceleration * Time.deltaTime;
-				_currentSpeed = Mathf.Max(0f, _currentSpeed);
-
-				rb2D.linearVelocity = _previousDirection * _currentSpeed;
+				rb2D.linearVelocity = Vector2.MoveTowards(rb2D.linearVelocity, Vector2.zero, deceleration * Time.deltaTime);
 			}
+
+			OnVelocityChanged?.Invoke(rb2D.linearVelocity);
+			_currentSpeedSquared = rb2D.linearVelocity.sqrMagnitude;
 		}
 	}
 }

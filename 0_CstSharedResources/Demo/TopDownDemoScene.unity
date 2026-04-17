@@ -2167,8 +2167,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: CST.Shared.Resources::CSTGames.SharedResources.TopDownPlayerController
   rb2D: {fileID: 1038176737}
   stats: {fileID: 11400000, guid: 47aa1f3b43b184b0d825115616c4cfb5, type: 2}
-  acceleration: 20
-  deceleration: 22
+  acceleration: 40
+  deceleration: 43
 --- !u!1 &1081964199
 GameObject:
   m_ObjectHideFlags: 0
