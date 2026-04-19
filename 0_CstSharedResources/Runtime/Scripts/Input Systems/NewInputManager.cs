@@ -17,6 +17,7 @@ namespace CSTGames.SharedResources
 	{
 		public event EventHandler OnAttackAction;
 		public event EventHandler<InputActionPhase> OnAimModeToggleAction;
+		public event EventHandler OnInteractAction;
 		public event EventHandler OnReloadAction;
 		public event EventHandler OnJumpAction;
 		public event EventHandler OnOpenInventoryAction;
@@ -55,6 +56,11 @@ namespace CSTGames.SharedResources
 			OnJumpAction?.Invoke(this, EventArgs.Empty);
 		}
 
+		private void Interact_performed(InputAction.CallbackContext context)
+		{
+			OnInteractAction?.Invoke(this, EventArgs.Empty);
+		}
+		
 		private void Reload_performed(InputAction.CallbackContext context)
 		{
 			OnReloadAction?.Invoke(this, EventArgs.Empty);
@@ -85,6 +91,11 @@ namespace CSTGames.SharedResources
 		public TValue ReadValue<TValue>(KeybindingAction action) where TValue : struct
 		{
 			return _inputActions[action].ReadValue<TValue>();
+		}
+
+		public InputAction GetInputAction(KeybindingAction action)
+		{
+			return _inputActions[action];
 		}
 
 		public string GetDisplayString(KeybindingAction action, int index = 0)
@@ -204,6 +215,7 @@ namespace CSTGames.SharedResources
 			Subscribe(KeybindingAction.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
 
 			Subscribe(KeybindingAction.Jump, ActionEventType.Performed, Jump_performed);
+			Subscribe(KeybindingAction.Interact, ActionEventType.Performed, Interact_performed);
 			Subscribe(KeybindingAction.Reload, ActionEventType.Performed, Reload_performed);
 			Subscribe(KeybindingAction.OpenInventory, ActionEventType.Performed, OpenInventory_performed);
 			Subscribe(KeybindingAction.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
@@ -220,6 +232,7 @@ namespace CSTGames.SharedResources
 			Unsubscribe(KeybindingAction.ToggleAimMode, ActionEventType.Canceled, AimMode_toggled);
 
 			Unsubscribe(KeybindingAction.Jump, ActionEventType.Performed, Jump_performed);
+			Unsubscribe(KeybindingAction.Interact, ActionEventType.Performed, Interact_performed);
 			Unsubscribe(KeybindingAction.Reload, ActionEventType.Performed, Reload_performed);
 			Unsubscribe(KeybindingAction.OpenInventory, ActionEventType.Performed, OpenInventory_performed);
 			Unsubscribe(KeybindingAction.ContinueDialogue, ActionEventType.Performed, ContinueDialogue_performed);
