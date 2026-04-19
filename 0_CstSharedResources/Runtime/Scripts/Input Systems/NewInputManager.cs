@@ -87,6 +87,11 @@ namespace CSTGames.SharedResources
 			return _inputActions[action].ReadValue<TValue>();
 		}
 
+		public InputAction GetInputAction(KeybindingAction action)
+		{
+			return _inputActions[action];
+		}
+
 		public string GetDisplayString(KeybindingAction action, int index = 0)
 		{
 			ReadOnlyArray<InputBinding> bindings = _inputActions[action].bindings;
